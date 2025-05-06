@@ -1,0 +1,46 @@
+{
+  "Data": [
+    {
+      "id": 1,
+      "image": "https://strapi.myplantin.com/small_Thrips_Damaging_the_Leaf_ba19b54467.webp",
+      "title": "Thrips",
+      "description": "Small insects known as Thysanoptera that cause damage by feeding on plant tissues.",
+      "category": "pests"
+    },
+    {
+      "id": 2,
+      "image": "https://strapi.myplantin.com/small_Example_of_Shot_Hole_Disease_b1f61159b2.webp",
+      "title": "Shot Hole Disease",
+      "description": "This condition shows up as small holes in the leaves, revealing the damage caused by the disease.",
+      "category": "diseases"
+    },
+    {
+      "id": 3,
+      "image": "https://strapi.myplantin.com/small_The_Leaf_with_a_Stink_Bug_d2ec8b40a7.webp",
+      "title": "Shield Bugs",
+      "description": "Also referred to as stink bugs, these pests often harm the plant by feeding on its sap.",
+      "category": "pests"
+    },
+    {
+      "id": 4,
+      "image": "https://strapi.myplantin.com/small_main_scale_insects_9acd41515f.webp",
+      "title": "Scale Insects",
+      "description": "Tiny brown insects that suck plant sap, depriving your plant of vital nutrients.",
+      "category": "pests"
+    },
+    {
+      "id": 5,
+      "image": "https://strapi.myplantin.com/small_Peach_Leaves_affected_by_Leaf_Curl_fcf405fc24.webp",
+      "title": "Peach Leaf Curl",
+      "description": "A disease caused by the fungus Taphrina deformans, leading to the curling of peach leaves.",
+      "category": "diseases"
+    },
+    {
+      "id": 6,
+      "image": "https://strapi.myplantin.com/small_pexels_teona_swift_6913568_c15c3b11c2.webp",
+      "title": "Snake",
+      "description": "Dracaena trifasciata is the most common type of sansevierias in indoor floriculture",
+      "category": "weeds"
+    }
+  ]
+}

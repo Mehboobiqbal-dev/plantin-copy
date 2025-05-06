@@ -1,0 +1,88 @@
+{
+  "plants": [
+    {
+      "id": 1,
+      "name": "Chinese banyan Care",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp&w=1920&q=100",
+      "description": "Ficus microcarpa.",
+      "category": "Succulents"
+    },
+    {
+      "id": 2,
+      "name": "Snake Plant",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_ce1f03d7-d437-4f74-b17b-0715816b81a8.webp&w=1920&q=100",
+      "description": "A hardy houseplant.",
+      "category": "Houseplants"
+    },
+    {
+      "id": 3,
+      "name": "Rose",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_282701f5-b57f-44ab-b0ce-3f1e5b24e897.webp&w=1920&q=100",
+      "description": "A classic flowering plant.",
+      "category": "Flowers"
+    },
+    {
+      "id": 4,
+      "name": "Oak Tree",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_1904eefb-8ad6-4cbd-903e-120913a7dc5d.webp&w=1920&q=100",
+      "description": "A large deciduous tree.",
+      "category": "Trees"
+    },
+    {
+      "id": 5,
+      "name": "Tomato",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_Plumed_cockscomb_Celosia_argentea_Buton_Island_min_c89b66ad05.webp&w=1920&q=100",
+      "description": "A fruiting vegetable plant.",
+      "category": "Veggies & Fruit"
+    },
+    {
+      "id": 6,
+      "name": "Bamboo",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fdescription_sm_2a11b65a-e667-415b-8d56-ac5e342ec4fc.webp&w=1920&q=100",
+      "description": "A fast-growing grass.",
+      "category": "Grasses"
+    },
+    {
+      "id": 7,
+      "name": "Boxwood",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp&w=1920&q=100",
+      "description": "A common landscaping shrub.",
+      "category": "Shrubs"
+    },
+    {
+      "id": 8,
+      "name": "Boston Fern",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_ce1f03d7-d437-4f74-b17b-0715816b81a8.webp&w=1920&q=100",
+      "description": "A lush green fern.",
+      "category": "Ferns"
+    },
+    {
+      "id": 9,
+      "name": "Basil",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_282701f5-b57f-44ab-b0ce-3f1e5b24e897.webp&w=1920&q=100",
+      "description": "An aromatic herb.",
+      "category": "Herbs"
+    },
+    {
+      "id": 10,
+      "name": "Saguaro",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_1904eefb-8ad6-4cbd-903e-120913a7dc5d.webp&w=1920&q=100",
+      "description": "A tall desert cactus.",
+      "category": "Cactuses"
+    },
+    {
+      "id": 11,
+      "name": "Saguaro Variant",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_af69e801-2cbb-45cc-b66b-3ade64c7dd7d.webp&w=1920&q=100",
+      "description": "A tall desert cactus.",
+      "category": "Cactuses"
+    },
+    {
+      "id": 12,
+      "name": "Golden Cereus",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_1904eefb-8ad6-4cbd-903e-120913a7dc5d.webp&w=1920&q=100",
+      "description": "Berger",
+      "category": "Cactuses"
+    }
+  ]
+}
