@@ -1,3 +1,5 @@
+// File: app/api/auth/[...nextauth]/route.ts
+
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
@@ -24,39 +26,19 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        try {
-          const { email, password } = credentials ?? {};
-          if (!email || !password) {
-            throw new Error('Both email and password are required.');
-          }
-
-          // Basic email format check
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(email)) {
-            throw new Error('Invalid email format.');
-          }
-
-          await connectToDatabase();
-          const user = await UserModel.findOne({ email });
-
-          if (!user) {
-            throw new Error('No user found with this email.');
-          }
-
-          if (!user.password) {
-            throw new Error('This user has no password set. Try using a different sign-in method.');
-          }
-
-          const isValid = await bcrypt.compare(password, user.password);
-          if (!isValid) {
-            throw new Error('Incorrect password.');
-          }
-
-          return { id: user.id, name: user.name, email: user.email };
-        } catch (error: any) {
-          console.error('Authorize error:', error.message);
-          throw new Error(error.message || 'Login failed.');
+        if (!credentials?.email || !credentials.password) {
+          throw new Error('Email and password are required');
         }
+        await connectToDatabase();
+        const user = await UserModel.findOne({ email: credentials.email });
+        if (!user || !user.password) {
+          throw new Error('Invalid email or password');
+        }
+        const isValid = await bcrypt.compare(credentials.password, user.password);
+        if (!isValid) {
+          throw new Error('Invalid email or password');
+        }
+        return { id: user.id, name: user.name, email: user.email };
       },
     }),
   ],
@@ -74,10 +56,12 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  pages: { signIn: '/authmodel' },
+  pages: { signIn: '/auth' },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
+// create the handler once:
 const handler = NextAuth(authOptions);
 
+// export it for both GET and POST
 export { handler as GET, handler as POST };
