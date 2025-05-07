@@ -19,7 +19,7 @@ const articles = [
     imageUrl: "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_adding_spent_coffee_grounds_onto_plants_as_natural_2021_09_01_20_56_58_utc_min_a6e9e2c49d.webp&w=1920&q=100",
   },
   {
-    id: 2,
+    id: 3, // Changed from 2 to 3
     title: "How to Use Coffee Grounds for Plants?",
     date: "May 4",
     readTime: "5 min read",
@@ -27,7 +27,7 @@ const articles = [
     imageUrl: "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_adding_spent_coffee_grounds_onto_plants_as_natural_2021_09_01_20_56_58_utc_min_a6e9e2c49d.webp&w=1920&q=100",
   },
   {
-    id: 2,
+    id: 4, // Changed from 2 to 4
     title: "How to Use Coffee Grounds for Plants?",
     date: "May 4",
     readTime: "5 min read",
@@ -46,12 +46,11 @@ const PopularArticles = () => {
   };
 
   return (
-    <div className="bg-blue-100 p-6 relative overflow-hidden"> {/* Hides scrollbar */}
+    <div className="bg-blue-100 p-6 relative overflow-hidden">
       <div
         ref={scrollRef}
         className="flex overflow-x-auto scroll-smooth gap-6 snap-x snap-mandatory pb-6 no-scrollbar"
       >
-        {/* Header card as part of the horizontal scroll */}
         <div className="flex-shrink-0 snap-start w-72 bg-blue-100 flex items-center justify-center p-4">
           <h2 className="text-3xl font-bold text-black text-center">
             Popular Articles
@@ -65,7 +64,7 @@ const PopularArticles = () => {
           >
             <img src={article.imageUrl} alt={article.title} className="w-full h-48 object-cover" />
             <div className="p-4">
-              <p className="text-sm text-gray-500 mb-1">{article.date} &#8226; {article.readTime}</p>
+              <p className="text-sm text-gray-500 mb-1">{article.date} • {article.readTime}</p>
               <h3 className="text-xl font-bold text-teal-500 mb-2">{article.title}</h3>
               <p className="text-gray-600 text-left text-sm">{article.description}</p>
             </div>
@@ -73,7 +72,6 @@ const PopularArticles = () => {
         ))}
       </div>
 
-      {/* Right scroll button */}
       <button
         onClick={handleScrollRight}
         className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-teal-400 rounded-full p-3 shadow-lg"
@@ -81,7 +79,6 @@ const PopularArticles = () => {
         <FaArrowRight className="w-6 h-6 text-white" />
       </button>
 
-      {/* Global styles to ensure scrollbar remains hidden */}
       <style jsx global>{`
         .no-scrollbar::-webkit-scrollbar {
           display: none;

@@ -300,7 +300,7 @@ export function NavigationHeader() {
                   </Link>
                   {/* Sign Out Button */}
                   <button
-                    onClick={() => signOut({ callbackUrl: '/auth' })}
+                    onClick={() => signOut({ callbackUrl: '/' })}
                     className="px-4 py-2 font-medium text-neutral-800"
                   >
                     Sign Out

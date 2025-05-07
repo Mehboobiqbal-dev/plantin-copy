@@ -1,4 +1,3 @@
-// src/app/problems/[[categorySlug]]/page.tsx
 "use client";
 
 import React, { useState } from 'react';
@@ -141,7 +140,7 @@ export default function PlantProblems() {
                 <p className="text-left text-2xl font-bold p-2">
                   What Are the Common Problems in Plants?
                 </p>
-                <p className="text-lg text-gray-700 text-left">
+                <div className="text-lg text-gray-700 text-left">
                   Protecting plants from diseases requires a thorough approach. First, you should define the
                   problem:
                   <ul>
@@ -161,15 +160,13 @@ export default function PlantProblems() {
                       pests include insects, bugs, and various weeds that may impact the plants.
                     </li>
                   </ul>
-                  To save the crop, you need to notice changes in the plant's appearance in time and take the
-                  necessary measures. It's easy to define all these problems at PlantIn and get professional help.
-                </p>
+                </div>
               </div>
               <div className="border-gray-300">
                 <p className="text-left text-2xl font-bold p-2">
                   How to Diagnose Plant Problems
                 </p>
-                <p className="text-lg text-gray-700 text-left">
+                <div className="text-lg text-gray-700 text-left">
                   Here is a short list of the steps you should take for easy detection of the plant problems:
                   <ul>
                     <li>
@@ -199,7 +196,7 @@ export default function PlantProblems() {
                   Are you thinking about how to diagnose my plant? No worries!
                   You can use our list of possible diseases, read helpful articles, or promptly diagnose the plant and
                   get a treatment guide from our best botanist.
-                </p>
+                </div>
               </div>
             </div>
           )}

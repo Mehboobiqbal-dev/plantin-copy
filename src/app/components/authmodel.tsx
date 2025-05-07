@@ -1,93 +1,43 @@
 'use client';
 
-import React, { useState } from 'react';
-import { FaApple, FaGoogle, FaFacebookF } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { signIn } from 'next-auth/react'; // Import NextAuth signIn
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import SocialButtons from './SocialButtons';
+import SignInForm from './SignInForm';
+import SignUpForm from './SignUpForm';
 
 const AuthModal = () => {
-  const [activeTab, setActiveTab] = useState('signin');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [name, setName] = useState('');
+  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
   const [error, setError] = useState('');
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [notificationsAccepted, setNotificationsAccepted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  // Handle Sign-In
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    const result = await signIn('credentials', {
-      redirect: false,
-      email,
-      password,
-    });
-
-    if (result?.error) {
-      setError(result.error);
+  useEffect(() => {
+    if (isLoading) {
+      console.log(`Loading state activated for ${activeTab}`);
     } else {
-      router.push('http://localhost:3000/');
+      console.log(`Loading state deactivated for ${activeTab}`);
     }
-  };
+  }, [isLoading, activeTab]);
 
-  // Handle Sign-Up
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSocialSignIn = async (provider: 'apple' | 'google' | 'facebook') => {
     setError('');
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    if (!termsAccepted) {
-      setError('You must agree to the Privacy Policy, Terms of Service, and Subscription Policy');
-      return;
-    }
 
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, confirmPassword }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || 'Failed to sign up');
-        return;
-      }
-
-      // After successful sign-up, attempt to sign in
-      const signInResult = await signIn('credentials', {
-        redirect: false,
-        email,
-        password,
-      });
-
-      if (signInResult?.error) {
-        setError(signInResult.error);
+      setIsLoading(true);
+      const result = await signIn(provider, { redirect: false });
+      if (result?.error) {
+        setError(`Failed to sign in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}. Please try again.`);
       } else {
-        router.push('http://localhost:3000/');
+        router.push('/');
       }
     } catch (err) {
-      setError('An error occurred during sign-up');
-    }
-  };
-
-  // Handle Social Sign-In
-  const handleSocialSignIn = async (provider: string) => {
-    const result = await signIn(provider, { redirect: false });
-    if (result?.error) {
-      setError(result.error);
-    } else {
-      router.push('http://localhost:3000/');
+      setError('An unexpected error occurred. Please try again.');
+      console.error(`Social sign-in error (${provider}):`, err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,6 +47,7 @@ const AuthModal = () => {
         className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none"
         aria-label="Close"
         onClick={() => router.push('/')}
+        disabled={isLoading}
       >
         <IoClose size={24} />
       </button>
@@ -109,7 +60,8 @@ const AuthModal = () => {
               activeTab === 'signin'
                 ? 'text-green-500 border-b-4 border-green-500'
                 : 'text-gray-500 border-b-4 border-transparent'
-            }`}
+            } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={isLoading}
           >
             Sign in
           </button>
@@ -119,36 +71,18 @@ const AuthModal = () => {
               activeTab === 'signup'
                 ? 'text-green-500 border-b-4 border-green-500'
                 : 'text-gray-500 border-b-4 border-transparent'
-            }`}
+            } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={isLoading}
           >
             Sign up
           </button>
         </div>
 
         {error && (
-          <div className="text-red-500 text-center mb-4">{error}</div>
+          <div className="text-red-500 text-center mb-4 font-medium bg-red-100 p-3 rounded-lg">{error}</div>
         )}
 
-        <div className="flex space-x-4 mb-8">
-          <button
-            onClick={() => handleSocialSignIn('apple')}
-            className="flex-1 h-12 border border-gray-200 rounded-lg flex items-center justify-center text-2xl text-gray-700 hover:bg-gray-50"
-          >
-            <FaApple />
-          </button>
-          <button
-            onClick={() => handleSocialSignIn('google')}
-            className="flex-1 h-12 border border-gray-200 rounded-lg flex items-center justify-center text-2xl text-gray-700 hover:bg-gray-50"
-          >
-            <FaGoogle />
-          </button>
-          <button
-            onClick={() => handleSocialSignIn('facebook')}
-            className="flex-1 h-12 border border-gray-200 rounded-lg flex items-center justify-center text-2xl text-gray-700 hover:bg-gray-50"
-          >
-            <FaFacebookF />
-          </button>
-        </div>
+        <SocialButtons isLoading={isLoading} handleSocialSignIn={handleSocialSignIn} />
 
         <div className="flex items-center mb-8">
           <hr className="flex-grow border-t border-gray-300" />
@@ -157,137 +91,17 @@ const AuthModal = () => {
         </div>
 
         {activeTab === 'signin' ? (
-          <form className="space-y-6" onSubmit={handleSignIn}>
-            <div>
-              <label className="block font-semibold mb-1 text-left">
-                Enter your email <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                placeholder="email@email.com"
-                className="bg-white border-solid border border-secondary md:rounded-[20px] rounded-full box-border font-medium text-14 md:px-[13px] md:py-[13px] text-black w-full md:mt-3 mt-2 outline-none focus:outline-none hover:outline-none placeholder:text-[#A2B5D1B3] px-4 py-[10px]"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <div className="flex justify-between items-center">
-                <label className="block font-semibold mb-1 text-left">
-                  Enter password <span className="text-red-500">*</span>
-                </label>
-                <a href="#" className="text-sm text-gray-600 hover:underline">
-                  Forgot password?
-                </a>
-              </div>
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-green-400 to-green-300 text-white py-3 rounded-full font-semibold text-lg hover:from-green-500 hover:to-green-400 focus:outline-none"
-            >
-              Sign in
-            </button>
-          </form>
+          <SignInForm
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            setError={setError}
+          />
         ) : (
-          <form className="space-y-4" onSubmit={handleSignUp}>
-            <div>
-              <label className="block font-semibold mb-1">
-                Enter your name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Your name"
-                className="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold mb-1">
-                Enter your email <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                placeholder="email@email.com"
-                className="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="flex space-x-4">
-              <div className="w-1/2">
-                <label className="block font-semibold mb-1">
-                  Enter password <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="w-1/2">
-                <label className="block font-semibold mb-1">
-                  Confirm password <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="password"
-                  placeholder="Confirm password"
-                  className="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <div className="flex items-start space-x-3">
-              <input
-                type="checkbox"
-                checked={termsAccepted}
-                onChange={(e) => setTermsAccepted(e.target.checked)}
-                className="mt-1"
-              />
-              <label className="text-sm text-gray-600">
-                I agree to the{' '}
-                <span className="text-green-500 font-medium">
-                  Privacy Policy, Terms of Service
-                </span>{' '}
-                and{' '}
-                <span className="text-green-500 font-medium">
-                  Subscription Policy
-                </span>
-              </label>
-            </div>
-            <div className="flex items-start space-x-3">
-              <input
-                type="checkbox"
-                checked={notificationsAccepted}
-                onChange={(e) => setNotificationsAccepted(e.target.checked)}
-                className="mt-1"
-              />
-              <label className="text-sm text-gray-600">
-                I agree to receive important notifications and updates via email
-              </label>
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-green-400 text-white py-3 rounded-full font-semibold text-lg hover:bg-green-500 focus:outline-none"
-            >
-              Sign up
-            </button>
-          </form>
+          <SignUpForm
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            setError={setError}
+          />
         )}
       </div>
 
@@ -325,9 +139,7 @@ const AuthModal = () => {
           </>
         ) : (
           <>
-            <h2 className="text-3xl font-extrabold text-center tracking-tight">
-              With PlantIn you can
-            </h2>
+            <h2 className="text-3xl font-extrabold text-center tracking-tight">With PlantIn you can</h2>
             <ul className="m-0 p-0 md:text-[18px] text-[16px] list-none">
               <li className="mb-4 flex items-start">
                 <span className="text-3xl text-gray-500 font-bold leading-[1.2] mr-2">•</span>

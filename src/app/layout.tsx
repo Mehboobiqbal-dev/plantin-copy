@@ -2,8 +2,16 @@ import './globals.css';
 import { NavigationHeader } from './components/NavigationHeader';
 import StickyFooter from './components/StickyFooter';
 import Footer from './components/Footer';
-import { SessionWrapper } from './SessionWrapper'; // Import the Client Component
-import { metadata } from './metadata'; // Import metadata from the Server Component
+import { SessionWrapper } from './SessionWrapper';
+import RouteChangeLoader from './components/RouteChangeLoader';
+import { metadata } from './metadata';
+import { Poppins } from 'next/font/google'
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-poppins',
+})
 
 export default function RootLayout({
   children,
@@ -17,6 +25,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <SessionWrapper>
+          <RouteChangeLoader /> {/* 👈 Add spinner */}
           <NavigationHeader />
           <main className="flex-grow">{children}</main>
           <StickyFooter />
