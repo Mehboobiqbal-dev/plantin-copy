@@ -1,123 +1,67 @@
-// src/lib/auth.ts
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook";
-import AppleProvider from "next-auth/providers/apple";
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "./mongodb";
-import { compare } from "bcryptjs";
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GithubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
+import connectToDatabase from '@/app/lib/mongodb';
+import UserModel from '@/app/models/user';
+import bcrypt from 'bcryptjs';
+
+// Define the User interface to match the Mongoose schema
+interface User {
+  _id: string; // or import { Types } from 'mongoose' and use Types.ObjectId
+  name: string;
+  email: string;
+  password?: string;
+}
 
 export const authOptions: NextAuthOptions = {
-  // — Persist users & sessions in MongoDB
-  adapter: MongoDBAdapter(clientPromise),
-
-  // — Use stateless JWT sessions
-  session: { strategy: "jwt" },
-
-  // — Required for production
-  secret: process.env.NEXTAUTH_SECRET,
-
-  // — Redirect here on both sign-in and error
-  pages: {
-    signIn: "/authmodel",
-    error:  "/authmodel",  
-  },
-
+  session: { strategy: 'jwt' },
   providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     CredentialsProvider({
-      name: "Email & Password",
+      name: 'Credentials',
       credentials: {
-        email:    { label: "Email",    type: "email"    },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Please provide both email and password");
+        if (!credentials?.email || !credentials.password) {
+          throw new Error('Email and password are required');
         }
-
-        const client = await clientPromise;
-        const users  = client.db().collection("users");
-
-        // 1) Find user
-        const user = await users.findOne<{
-          _id: any;
-          name: string;
-          email: string;
-          passwordHash: string;
-        }>({ email: credentials.email });
-        if (!user) {
-          throw new Error("User not found");
+        await connectToDatabase();
+        const user = await UserModel.findOne({ email: credentials.email }) as User | null;
+        if (!user || !user.password) {
+          throw new Error('Invalid email or password');
         }
-
-        // 2) Verify password
-        const isValid = await compare(credentials.password, user.passwordHash);
+        const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) {
-          throw new Error("Invalid credentials");
+          throw new Error('Invalid email or password');
         }
-
-        // 3) Return minimal user object
-        return {
-          id:    user._id.toString(),
-          name:  user.name,
-          email: user.email,
-        };
+        return { id: user._id, name: user.name, email: user.email };
       },
     }),
-
-    GoogleProvider({
-      clientId:     process.env.GOOGLE_ID!,
-      clientSecret: process.env.GOOGLE_SECRET!,
-    }),
-
-    FacebookProvider({
-      clientId:     process.env.FACEBOOK_CLIENT_ID!,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
-    }),
-
-    AppleProvider({
-      clientId:     process.env.APPLE_ID!,
-      // Must be a signed JWT string
-      clientSecret: process.env.APPLE_CLIENT_SECRET!,
-    }),
   ],
-
   callbacks: {
-    // Persist user.id into the token on sign-in
-    async jwt({ token, user }) {
-      if (user) token.id = user.id as string;
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.id = user.id;
+        token.provider = account?.provider!;
+      }
       return token;
     },
-
-    // Make token.id available via `session.user.id`
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-      }
+      session.user.id = token.id as string;
+      session.user.provider = token.provider as string;
       return session;
     },
   },
-
-  events: {
-    // Log every successful sign-in (account may be null for e.g. Credentials)
-    async signIn({ user, account }) {
-      console.log("✅ NextAuth signIn:", user.email, account?.provider);
-    },
-  },
-
-  // Catch all internal NextAuth logs/errors
-  logger: {
-    error(code, metadata) {
-      console.error("NextAuth error:", code, metadata);
-    },
-    warn(code) {
-      console.warn("NextAuth warning:", code);
-    },
-    debug(code, metadata) {
-      console.debug("NextAuth debug:", code, metadata);
-    },
-  },
-
-  // Turn on debug messages in development
-  debug: process.env.NODE_ENV === "development",
+  pages: { signIn: '/auth' },
+  secret: process.env.NEXTAUTH_SECRET,
 };

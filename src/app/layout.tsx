@@ -3,7 +3,7 @@ import { NavigationHeader } from './components/NavigationHeader';
 import StickyFooter from './components/StickyFooter';
 import Footer from './components/Footer';
 import { SessionWrapper } from './SessionWrapper';
-import RouteChangeLoader from './components/RouteChangeLoader';
+
 import { metadata } from './metadata';
 import { Poppins } from 'next/font/google'
 
@@ -25,7 +25,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <SessionWrapper>
-          <RouteChangeLoader /> {/* 👈 Add spinner */}
+         
           <NavigationHeader />
           <main className="flex-grow">{children}</main>
           <StickyFooter />

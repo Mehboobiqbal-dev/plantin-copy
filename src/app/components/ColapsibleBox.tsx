@@ -1,7 +1,20 @@
+"use client";
+
 import React, { useState } from "react";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 
-const CollapsibleBox = ({ title, children, titleClassName = "" }) => {
+// Define prop types for TypeScript
+interface CollapsibleBoxProps {
+  title: string;
+  children: React.ReactNode;
+  titleClassName?: string;
+}
+
+const CollapsibleBox: React.FC<CollapsibleBoxProps> = ({
+  title,
+  children,
+  titleClassName = "",
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
