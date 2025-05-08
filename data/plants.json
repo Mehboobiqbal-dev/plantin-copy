@@ -9,30 +9,30 @@
     },
     {
       "id": 2,
-      "name": "Snake Plant",
+      "name": "Cotton Candy Fern Care",
       "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_ce1f03d7-d437-4f74-b17b-0715816b81a8.webp&w=1920&q=100",
-      "description": "A hardy houseplant.",
+      "description": "Nephrolepis Exaltata Smithii",
       "category": "Houseplants"
     },
     {
       "id": 3,
-      "name": "Rose",
-      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_282701f5-b57f-44ab-b0ce-3f1e5b24e897.webp&w=1920&q=100",
-      "description": "A classic flowering plant.",
+      "name": "Grasses Care",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_menu_62fcb98c-a105-4cb4-95c5-523a7e1cf94a.webp&w=1920&q=100",
+      "description": "Poaceae.",
       "category": "Flowers"
     },
     {
       "id": 4,
-      "name": "Oak Tree",
-      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_1904eefb-8ad6-4cbd-903e-120913a7dc5d.webp&w=1920&q=100",
-      "description": "A large deciduous tree.",
+      "name": "Calathea Jungle Velvet",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_Depositphotos_480833974_XL_ac5406437a.webp&w=1920&q=100",
+      "description": "Calathea warscewiczii",
       "category": "Trees"
     },
     {
       "id": 5,
-      "name": "Tomato",
-      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_Plumed_cockscomb_Celosia_argentea_Buton_Island_min_c89b66ad05.webp&w=1920&q=100",
-      "description": "A fruiting vegetable plant.",
+      "name": "Mexican Hat plant",
+      "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_1904eefb-8ad6-4cbd-903e-120913a7dc5d.webp&w=1920&q=100",
+      "description": "Bryophyllum daigremontianum",
       "category": "Veggies & Fruit"
     },
     {
@@ -46,7 +46,7 @@
       "id": 7,
       "name": "Boxwood",
       "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fsmall_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp&w=1920&q=100",
-      "description": "A common landscaping shrub.",
+      "description": "A comA large deciduous treemon landscaping shrub.",
       "category": "Shrubs"
     },
     {

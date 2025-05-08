@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import plantData from '../data/plants.json';
 
 // Define interface for plant
 interface Plant {
@@ -15,14 +14,15 @@ interface Plant {
 
 interface RelatedPlantsProps {
   plantId: string;
+  allPlants: Plant[];
 }
 
-const RelatedPlants: React.FC<RelatedPlantsProps> = ({ plantId }) => {
+const RelatedPlants: React.FC<RelatedPlantsProps> = ({ plantId, allPlants }) => {
   const router = useRouter();
   const idNum = parseInt(plantId, 10);
-  const plants = (plantData as { plants: Plant[] }).plants
-    .filter(p => p.id !== idNum) // Exclude current plant
-    .slice(0, 4); // Limit to 4 related plants
+  const plants = allPlants
+    .filter(p => p.id !== idNum)
+    .slice(0, 4);
 
   return (
     <section className="mt-10 max-w-7xl mx-auto px-4">

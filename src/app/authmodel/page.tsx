@@ -15,7 +15,7 @@ const AuthModal = () => {
   const [error, setError] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [notificationsAccepted, setNotificationsAccepted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   // Handle Sign-In
@@ -32,16 +32,23 @@ const AuthModal = () => {
       });
 
       if (result?.error) {
+        console.error('Sign-in error:', result.error);
         if (result.error.includes('Invalid email or password')) {
           setError('Incorrect email or password. Please try again.');
+        } else if (result.error.includes('NetworkError')) {
+          setError('Network error: Unable to connect to authentication server.');
         } else {
           setError('Sign-in failed. Please try again later.');
         }
       } else {
-        router.push('http://localhost:3000/');
+        router.push('/');
       }
-    } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+    } catch (err: unknown) {
+      console.error('Unexpected sign-in error:', {
+        message: err instanceof Error ? err.message : 'Unknown error',
+        stack: err instanceof Error ? err.stack : undefined,
+      });
+      setError('An unexpected error occurred during sign-in. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -53,20 +60,23 @@ const AuthModal = () => {
     setError('');
     setIsLoading(true);
 
+    // Client-side validation
     if (password !== confirmPassword) {
+      console.error('Client-side validation failed: Passwords do not match');
       setError('Passwords do not match.');
       setIsLoading(false);
       return;
     }
 
     if (!termsAccepted) {
+      console.error('Client-side validation failed: Terms not accepted');
       setError('You must agree to the Privacy Policy, Terms of Service, and Subscription Policy.');
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await fetch('/api/auth/signup', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password, confirmPassword }),
@@ -75,10 +85,23 @@ const AuthModal = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        if (data.error.includes('User exists')) {
+        console.error('Sign-up API error:', {
+          status: response.status,
+          error: data.error,
+          details: data.details,
+        });
+        if (data.error.includes('User with this email already exists')) {
           setError('An account with this email already exists.');
-        } else if (data.error.includes('Invalid input')) {
-          setError('Please provide valid name, email, and matching passwords.');
+        } else if (data.error.includes('Valid email is required')) {
+          setError('Please provide a valid email address.');
+        } else if (data.error.includes('Password is required')) {
+          setError('Password must be at least 6 characters long.');
+        } else if (data.error.includes('Name is required')) {
+          setError('Please provide a valid name.');
+        } else if (data.error.includes('Request body is required')) {
+          setError('Please fill out all required fields.');
+        } else if (data.error.includes('Failed to connect to the database')) {
+          setError('Database error: Unable to process sign-up. Please try again later.');
         } else {
           setError(data.error || 'Failed to sign up. Please try again.');
         }
@@ -94,12 +117,23 @@ const AuthModal = () => {
       });
 
       if (signInResult?.error) {
+        console.error('Auto sign-in after sign-up failed:', signInResult.error);
         setError('Sign-up successful, but auto sign-in failed. Please sign in manually.');
       } else {
-        router.push('http://localhost:3000/');
+        router.push('/');
       }
-    } catch (err) {
-      setError('An unexpected error occurred during sign-up.');
+    } catch (err: unknown) {
+      console.error('Unexpected sign-up error:', {
+        message: err instanceof Error ? err.message : 'Unknown error',
+        stack: err instanceof Error ? err.stack : undefined,
+        requestBody: { name, email, password, confirmPassword },
+      });
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      if (errorMessage.includes('Failed to fetch')) {
+        setError('Network error: Unable to reach the sign-up server.');
+      } else {
+        setError('An unexpected error occurred during sign-up. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -113,12 +147,21 @@ const AuthModal = () => {
     try {
       const result = await signIn(provider, { redirect: false });
       if (result?.error) {
-        setError(`Failed to sign in with ${provider}. Please try again.`);
+        console.error(`Social sign-in error for ${provider}:`, result.error);
+        if (result.error.includes('NetworkError')) {
+          setError(`Network error: Unable to connect to ${provider} authentication server.`);
+        } else {
+          setError(`Failed to sign in with ${provider}. Please try again.`);
+        }
       } else {
-        router.push('http://localhost:3000/');
+        router.push('/');
       }
-    } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+    } catch (err: unknown) {
+      console.error(`Unexpected social sign-in error for ${provider}:`, {
+        message: err instanceof Error ? err.message : 'Unknown error',
+        stack: err instanceof Error ? err.stack : undefined,
+      });
+      setError(`An unexpected error occurred during ${provider} sign-in. Please try again.`);
     } finally {
       setIsLoading(false);
     }

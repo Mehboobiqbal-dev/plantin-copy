@@ -1,10 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import ImageLightbox from '../../components/ImageLightbox';
-import plantData from '../../data/plants.json';
-import plantDetails from '../../data/PlantDetails.json';
 import PlantCareSection from '../../components/PlantCareSection';
 import RelatedPlants from '../../components/RelatedPlants';
 import PopularArticles from '../../components/PopularArticle';
@@ -25,47 +23,61 @@ interface PlantDetail {
   fullDescription?: string;
 }
 
-// Define type for plantDetails
-interface PlantDetails {
-  [key: string]: PlantDetail;
-}
-
-// Define prop interfaces for components
-interface RelatedPlantsProps {
-  plantId: string;
-}
-
-interface ImageLightboxProps {
-  images: string[];
-  startIndex: number;
-  onClose: () => void;
-}
-
 export default function PlantsDetail() {
   const params = useParams();
   const router = useRouter();
 
-  // Narrow down the ParamValue type (string|string[]|undefined) to a string
   const raw = Array.isArray(params.plantId) ? params.plantId[0] : params.plantId;
   const plantId = raw ?? '';
   const idNum = parseInt(plantId, 10);
 
-  // Pull from JSON
-  const allPlants = (plantData as { plants: Plant[] }).plants;
-  const plant = allPlants.find(p => p.id === idNum);
-  const detail = plantId ? (plantDetails as PlantDetails)[plantId] : undefined;
-
-  // Lightbox state
+  const [allPlants, setAllPlants] = useState<Plant[]>([]);
+  const [detail, setDetail] = useState<PlantDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
 
-  // If no plant, redirect
-  if (!plant) {
-    router.replace('/identify/all-plants');
-    return null;
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const plantsRes = await fetch('/api/plants');
+        if (!plantsRes.ok) throw new Error('Failed to fetch plants');
+        const plantsData = await plantsRes.json();
+        setAllPlants(plantsData.plants);
 
-  // Build images array
+        const plant = plantsData.plants.find((p: Plant) => p.id === idNum);
+        if (!plant) {
+          router.replace('/identify/all-plants');
+          return;
+        }
+
+        const detailRes = await fetch(`/api/plantDetails/${plantId}`);
+        if (detailRes.ok) {
+          const detailData = await detailRes.json();
+          setDetail(detailData);
+        } else {
+          setDetail(null);
+        }
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (plantId && !isNaN(idNum)) fetchData();
+    else router.replace('/identify/all-plants');
+  }, [plantId, idNum, router]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  const plant = allPlants.find((p) => p.id === idNum);
+  if (!plant) return null;
+
   const images: string[] = detail?.images?.length ? detail.images : plant.image ? [plant.image] : [];
 
   return (
@@ -95,9 +107,7 @@ export default function PlantsDetail() {
                 key={idx}
                 src={src}
                 alt={`${plant.name} ${idx + 1}`}
-                className={`${
-                  idx === 0 ? 'md:row-span-2' : ''
-                } w-full h-full object-cover rounded-lg shadow-md cursor-pointer`}
+                className={`${idx === 0 ? 'md:row-span-2' : ''} w-full h-full object-cover rounded-lg shadow-md cursor-pointer`}
                 onClick={() => {
                   setPhotoIndex(idx);
                   setLightboxOpen(true);
@@ -152,7 +162,6 @@ export default function PlantsDetail() {
         <h2 className="text-2xl font-bold text-gray-900 mb-6">How to Care for the Plant</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           <PlantCareSection plant={plant} />
-
           <div className="sticky top-24 py-4 px-2 bg-blue-50 rounded-xl">
             <div className="flex items-center space-x-4">
               <img
@@ -175,7 +184,7 @@ export default function PlantsDetail() {
         </div>
       </div>
 
-      <RelatedPlants plantId={plantId} />
+      <RelatedPlants plantId={plantId} allPlants={allPlants} />
       <PopularArticles />
 
       {lightboxOpen && (

@@ -61,7 +61,7 @@ export function NavigationHeader() {
   // Redirect to main page after sign-in (if authenticated)
   React.useEffect(() => {
     if (status === 'authenticated') {
-      router.push('http://localhost:3000/');
+      router.push('/');
     }
   }, [status, router]);
 

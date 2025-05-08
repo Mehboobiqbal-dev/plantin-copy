@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import plantData from "../../data/plants.json";
+import { MongoClient } from "mongodb";
 import PlantIdentifierClient from "../../components/PlantIdentifierClient";
 
 interface Category {
@@ -19,7 +19,6 @@ interface PlantData {
   plants: Plant[];
 }
 
-// Define props for the server component
 interface PlantIdentifierProps {
   params: Promise<{ categorySlug: string[] }>;
 }
@@ -52,8 +51,37 @@ const categoryDisplayNames: { [key: string]: string } = {
   Herbs: "Herb",
 };
 
+const getPlants = async (): Promise<PlantData> => {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error("MONGODB_URI is not defined in environment variables");
+  }
+  const client = new MongoClient(uri);
+  try {
+    await client.connect();
+    const database = client.db("plantdb");
+    const collection = database.collection("plants");
+    const plantsFromDb = await collection.find({}).toArray();
+    // Map MongoDB documents to Plant interface
+    const plants: Plant[] = plantsFromDb.map((doc) => ({
+      id: doc.id,
+      name: doc.name,
+      category: doc.category,
+      image: doc.image,
+      description: doc.description,
+    }));
+    return { plants };
+  } catch (error) {
+    console.error("Error fetching plants from MongoDB:", error);
+    throw error;
+  } finally {
+    await client.close();
+  }
+};
+
 const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
-  const { plants } = plantData as PlantData;
+  const plantData = await getPlants();
+  const plants = plantData.plants;
   const resolvedParams = await params;
   const slug = resolvedParams.categorySlug.length > 0 ? resolvedParams.categorySlug[0] : undefined;
   const selectedCategory: string = slug
@@ -65,7 +93,6 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
       ? plants
       : plants.filter((plant) => plant.category === selectedCategory);
 
-  // Compute plant counts for each category
   const plantCounts: { [key: string]: number } = {};
   categories.forEach((category) => {
     if (category.name === "All plants") {
@@ -118,15 +145,13 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
             </div>
           </div>
         </div>
-        <div
-          className="w-[65%] h-full"
-          style={{
-            backgroundImage: "url('/plantidentifier.png')",
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
+        <div className="w-[65%] h-full">
+          <img
+            src="https://strapi.myplantin.com/Plant_illustration01_78e3457b6f.webp"
+            alt="Plant Illustration"
+            className="w-full h-full object-contain"
+          />
+        </div>
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
