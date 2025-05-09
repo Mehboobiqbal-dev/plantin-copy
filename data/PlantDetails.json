@@ -1,102 +1,256 @@
-{
-  "1": {
+[
+  {
     "scientificName": "Ficus microcarpa",
-    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners.  The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
-    "fullDescription2": "The Ficus Ginseng is a very popular indoor tree species for Bonsai beginners. It has a thick, pot-bellied trunk, similar to the Ginseng root. The leaves are small and oval-shaped, and the tree can be trained into various shapes. It prefers bright, indirect light and should be watered when the top inch of soil is dry. The Ficus Ginseng is known for its resilience and can tolerate neglect, making it an excellent choice for those new to Bonsai cultivation.",
+    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia.The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap which will leak from wounds or cuts. The tropical figs are evergreen trees small shrubs or even climbing plants. The Ficus Ginseng has a thick pot-bellied trunk similar to the Ginseng root.",
     "images": [
       "https://strapi.myplantin.com/large_bonsai_ginseng_or_ficus_retusa_also_known_as_banya_2021_10_17_19_41_17_utc_min_f632905789.webp",
       "https://strapi.myplantin.com/medium_menu_933fef76-6073-4b49-8873-1b96ccbe34b4.webp",
       "https://strapi.myplantin.com/large_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp"
-    ]
+    ],
+    "care": {
+      "Water": "Water the Chinese banyan as soon as the soil becomes dry on one centimeter, water so as to moisten all of it. During a growth period (spring, summer), watering should be regular - once or twice a week - but measured in order not to asphyxiate the roots of plants. In a fall, space the waterings gently, until winter.",
+      "Pruning": "Use sharp pruning shears to remove the sucker branches and the errant branches that are growing in the wrong direction or making it difficult to fertilize the tree. Since Chinese banyan has a conical habit, trim the tree as per its natural shape. Trimming should be done every week during the summer.",
+      "Fertilizer": "Mix the recommended amount of liquid fertilizer and water in a watering can. Then simply pour the mix into the soil as if you're watering the plant.",
+      "Sunlight": "Requires either part sun or part shade, does well in filtered light for most of the day.",
+      "Soil": "Loam soil offers a great balance of silt, sand, and clay as well as a bit of hummus.",
+      "Propagation": "Chinese banyan can be propagated by cuttings, which can be taken from the tips and rooted. Alternatively, you can do eye cuttings.",
+      "Temperature": "Temperatures hovering around 60 to 70 or 75°F (15 to 25°C) are perfect if kept all year round.",
+      "Container": "Choose a pot with drainage holes, which also ensures potting soil doesn't stay too wet after watering your houseplants. The excess can freely escape out the bottom of the container, allowing oxygen to make its way to plant roots.",
+      "Popularity": "118,984 people already have this plant, 10,992 people have added this plant to their wishlists.",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
   },
-  "2": {
+  {
     "scientificName": "Nephrolepis Exaltata Smithii",
     "fullDescription": "The cotton candy fern plant's Latin name is Nephrolepis exaltata. The fern is also known as the Suzi Wong fern, which can grow to 5 feet tall. The name of the plant describes its feel and color. The cotton candy fern has soft, fluffy chartreuse-colored fronds. The fern can be planted indoors or outdoors in large containers or hanging baskets.",
     "images": [
       "https://strapi.myplantin.com/large_main_ce1f03d7-d437-4f74-b17b-0715816b81a8.webp",
       "https://strapi.myplantin.com/large_14344_b739b7b8a3.webp",
       "https://strapi.myplantin.com/medium_menu_410b7b2f-bcf5-4d18-8c9d-d9953ada9d08.webp"
-    ]
+    ],
+    "care": {
+      "Water": "Keep the soil consistently moist but not waterlogged. Water when the top inch of soil feels dry.",
+      "Pruning": "Remove any yellowed or dead fronds at the base to encourage new growth and maintain appearance.",
+      "Fertilizer": "Feed with a balanced liquid fertilizer diluted to half strength every 4-6 weeks during the growing season (spring/summer).",
+      "Sunlight": "Prefers bright, indirect light. Avoid direct sunlight, which can scorch the fronds.",
+      "Soil": "Use a well-draining, peat-based potting mix.",
+      "Propagation": "Can be propagated by dividing the root ball during repotting or by planting runners.",
+      "Temperature": "Ideal temperatures are between 60-75°F (15-24°C). Avoid cold drafts.",
+      "Container": "A hanging basket or a pot with good drainage is suitable.",
+      "Popularity": "A popular choice for its delicate, fluffy appearance.",
+      "Common Pests": "Watch out for mealybugs and spider mites.",
+      "Frequent Diseases": "Susceptible to fungal spots if overwatered or if humidity is too low.",
+      "Botanist Tips": "Cotton Candy Ferns love humidity. Mist regularly or place near a humidifier."
+    }
   },
-  "3": {
+
+  
+  {
     "scientificName": "Poaceae",
-    "fullDescription": "Poaceae or Gramineae is a large and nearly ubiquitous family of monocotyledonous flowering plants known as grasses. It includes the cereal grasses, bamboos and the grasses of natural grassland and species cultivated in lawns and pasture. The latter are commonly referred to collectively as grass.",
-    "fullDescription2": "The Poaceae are the world’s single most important source of food. They rank among the top five families of flowering plants in terms of the number of species, but they are clearly the most abundant and important family of the Earth’s flora.",
+    "fullDescription": "Poaceae or Gramineae is a large and nearly ubiquitous family of monocotyledonous flowering plants known as grasses. It includes the cereal grasses, bamboos and the grasses of natural grassland and species cultivated in lawns and pasture. The latter are commonly referred to collectively as grass.The Poaceae are the world’s single most important source of food. They rank among the top five families of flowering plants in terms of the number of species but they are clearly the most abundant and important family of the Earth’s flora.",
     "images": [
       "https://strapi.myplantin.com/large_main_c1039afa-281d-46dc-a4e7-bc2493203120.webp",
       "https://strapi.myplantin.com/description_sm_f8d13287-1856-490b-85ae-fc1a6f1d4eed.webp",
       "https://strapi.myplantin.com/medium_menu_62fcb98c-a105-4cb4-95c5-523a7e1cf94a.webp"
-    ]
+    ],
+    "care": {
+      "Water": "Water only occasionally; during summer water can be done more often.",
+      "Pruning": "Cool-season grasses tend to look good even as the weather cools. Leave their foliage in place until spring and then as soon as the snow is gone cut them back. Leave about 1/3 of the plant in place. Trimming cool-season grasses too harshly can irreparably harm the plant.",
+      "Fertilizer": "Many ornamental grasses are selections of native prairie or woodland plants. In their natural habitat, the only nutrients they receive comes from their own decomposing foliage and that of the plants around them. You can mimic those conditions by mulching around the base of your grasses in fall with shredded leaves. No other fertilizer is needed or desired by grasses; in fact, feeding them often causes them to stretch and flop over.",
+      "Sunlight": "Best grown in full sun to part shade.",
+      "Soil": "Moist but well-drained soil.",
+      "Propagation": "Can be propagated by dividing the root ball during repotting or by planting runners.",
+      "Container": "Choose a pot with drainage holes, which also ensures potting soil doesn't stay too wet after watering your houseplants. The excess can freely escape out the bottom of the container, allowing oxygen to make its way to plant roots.",
+      "Popularity": "118,984 people already have this plant, 10,992 people have added this plant to their wishlists.",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
   },
-  "4": {
+  {
     "scientificName": "Calathea warscewiczii",
-    "fullDescription": "Calathea “Jungle Velvet” is a tropical queen with wide, lush, and glossy leaves colored bright green on the top and burgundy red at the bottom. This elegant plant will organically fit into any stylish interior.",
-    "fullDescription2": "Calathea “Jungle Velvet” is a Calathea subspecies native to tropical jungles of South America. It has large leaves colored green at the top and velvety red on the undersides. In an ideal environment, the plant will bloom with cream-colored cone-shaped flowers and may reach 3-4 ft (90-120cm) in height. This Calathea isn’t very fussy, but you need to pay attention to its humidity needs.",
+    "fullDescription": "Calathea “Jungle Velvet” is a tropical queen with wide, lush, and glossy leaves colored bright green on the top and burgundy red at the bottom. This elegant plant will organically fit into any stylish interior.Calathea Jungle Velvet is a Calathea subspecies native to tropical jungles of South America. It has large leaves colored green at the top and velvety red on the undersides. In an ideal environment, the plant will bloom with cream-colored cone-shaped flowers and may reach 3-4 ft (90-120cm) in height. This Calathea isn’t very fussy but you need to pay attention to its humidity needs.",
     "images": [
       "https://strapi.myplantin.com/large_bonsai_ginseng_or_ficus_retusa_also_known_as_banya_2021_10_17_19_41_17_utc_min_f632905789.webp",
       "https://strapi.myplantin.com/medium_menu_933fef76-6073-4b49-8873-1b96ccbe34b4.webp",
       "https://strapi.myplantin.com/large_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp"
-    ]
+    ],
+    "care": {
+      "Water": "Calathea likes moist but not soggy soil. Water it several times a week in the warm period and once a week in the cold season. The soil's top inch (2.5 cm) should feel dry before you water the plant again. Never let the soil dry out completely. It’s best to use filtered or distilled water because chemicals in tap water can damage your plant. Calathea also needs high humidity, resembling rainforest conditions. You can use a plant humidifier or put your plant on a tray with pebbles covered in water in half. In the latter case, don’t let the water touch the bottom of the pot. Misting is also good but not as effective.",
+      "Pruning": "Prune dead, yellow, and old leaves when necessary. Other than that, Calathea does not need pruning.",
+      "Fertilizer": "Fertilize once a month with a nitrogen-based balanced fertilizer diluted to half strength during the growth period. Flush the soil every 3 months to get rid of excess mineral buildup.",
+      "Sunlight": "Calathea is a shade-tolerant plant and needs a spot with indirect sunlight. A north-facing window is ideal. Other windows will also work, provided that the plant is protected from direct sunlight by curtains.",
+      "Soil": "Calathea needs a well-draining and airy soil mixture. Two parts peat + one part perlite will work just fine",
+      "Propagation": "The easiest way to propagate Calathea is via the division of rhizomes. Carefully take the plant from the pot and gently remove the soil from the edges. Delicately separate the pup’s roots from the mother plant (it should separate without the need for cutting), and plant the pup in a small pot with well-draining, moist soil. Plant the mother plant into a new pot 1-2 inches (2.5 - 5 cm) larger in diameter. Put the plants in a warm and humid area with dappled medium light and wait.",
+      "Temperature": "A stable temperature between 60°F - 80°F (15-27˚C) is perfect. Do not expose your plant to hot and cold drafts. When the temperature drops below 60°F (15˚C), the plant goes into dormancy.",
+      "Container": "Any pot will work, provided that it has good drainage. Make sure your pot has several drainage holes.",
+      "Popularity": "2,367 people already have this plant 592 people have added this plant to their wishlists",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
   },
-  "5": {
+  {
     "scientificName": "Bryophyllum daigremontianum",
-    "fullDescription": "The Bryophyllum daigremontianum has many different names, including Devil’s Backbone, Alligator Plant, and Mother of Thousands. This plant is poisonous and, while easy to care for, should be kept away from children and pets. A fascinating plant with stunning leaves, the Mexican Hat Plant hails from Madagascar. This plant can occasionally flower with gray and violet flowers, after which it will die. When it does die, this plant releases tons of plantlets that will take root and grow anywhere, even among your other plants.",
-    "fullDescription2": "This plant is known for quickly spreading and being difficult to contain, so placing it in its own pot away from your other plants is ideal. They max out at 2-3 ft (.60 - .91 m) and are a toxic plant, so wear gloves whenever handling.",
+    "fullDescription": "The Bryophyllum daigremontianum has many different names, including Devil’s Backbone, Alligator Plant, and Mother of Thousands. This plant is poisonous and, while easy to care for, should be kept away from children and pets.A fascinating plant with stunning leaves the Mexican Hat Plant hails from Madagascar. This plant can occasionally flower with gray and violet flowers, after which it will die. When it does die, this plant releases tons of plantlets that will take root and grow anywhere even among your other plants.This plant is known for quickly spreading and being difficult to contain so placing it in its own pot away from your other plants is ideal. They max out at 2-3 ft (.60 - .91 m) and are a toxic plant, so wear gloves whenever handling.",
     "images": [
       "https://strapi.myplantin.com/large_main_1904eefb-8ad6-4cbd-903e-120913a7dc5d.webp",
       "https://strapi.myplantin.com/large_Depositphotos_327460112_L_min_5a79e20d2f.webp",
       "https://strapi.myplantin.com/medium_menu_d978f261-728a-4dd8-bdce-461bc5a8209b.webp"
-    ]
+    ],
+    "care": {
+      "Water": "The Mexican Hat plant only requires watering to keep the soil wet. Once it has dried out, it is time to water your plant again. The leaves of this plant are prone to rotting, so take care to keep them dry.",
+      "Pruning": "Pruning will help encourage the Mexican Hat plant to grow. The best pruning practice is to cut off the top most stem.",
+      "Fertilizer": "Use a liquid fertilizer between early spring and fall to keep your Mexican Hat healthy.",
+      "Sunlight": "Direct sunlight is best for this plant. Mexican Hat plants need constant sunlight and do not do well in frost or below-freezing temperatures.",
+      "Soil": "Cactus soil is best for this plant. If you find the soil is retaining water too well, add in the sand to help with excess water.",
+      "Propagation": "Place the plantlets from the mother plant in another plant and place them in a sunny spot. Small plants should begin to sprout, and repotting can then be done.",
+      "Temperature": "The ideal temperature for this plant is 65 – 75°F (16 – 24°C).",
+      "Container": "A terracotta pot with drainage holes is best for this plant.",
+      "Popularity": "434 people already have this plant 177 people have added this plant to their wishlists",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
   },
-  "6": {
+  {
+    "scientificName": "Stetsonia coryne",
+    "fullDescription": "Welcome to the world of Stetsonia coryne. It’s is a fascinating and eye-catching cactus species that has quickly become a popular houseplant. Its dense clusters of spines that look like toothpicks are what give this cactus its name. Easy to care for, Toothpick Cactus is an excellent addition to any home, making it a unique element to any space.The cactus is native to the deserts and semi-arid areas of Argentina, Bolivia and Paraguay. In its natural habitat this cactus can reach heights of up to 30 feet (9 m) making it one of the tallest cactus species in the world. Toothpick Cactus is a relatively slow-growing plant that can take up to 10 years to reach maturity. This pricky plant produces bunches of white or yellowish-white spines that look like toothpicks. It also blooms with showy white flowers in summer which are followed by edible red sweet and juicy fruit.",
+    "images": [
+      "https://strapi.myplantin.com/large_main_6057ee5c-394b-4e4a-8987-4e7607883b03.webp",
+      "https://strapi.myplantin.com/large_768px_Starr_070906_9063_Stetsonia_coryne_habit_Kula_Ace_Hardware_and_Nursery_Maui_24523649509_min_72b8c62804.webp",
+      "https://strapi.myplantin.com/large_menu_7b340f51-2539-49d8-b365-aaac562bdfd5.webp"
+    ],
+    "care": {
+      "Water": "This cactus is drought-tolerant and should only be watered when the soil is completely dry. Give it an infrequent, deep drink and allow the soil to dry out before watering again.",
+      "Pruning": "Prune Toothpick Cactus only when it’s overgrown. Use a sharp, clean pair of scissors or pruning shears to trim away any dead or damaged growth.",
+      "Fertilizer": "Feeding may not be necessary at all if the compost is fresh then, feed in summer only if the plant hasn't been repotted recently. If the soil is dated, feel your cactus with slow-release liquid fertilizer once a month during the spring-summer growing season. Pick up a specifically formulated for this cacti species fertilizer from your local garden store. Avoid nourishing the plant in winter as it goes dormant and doesn’t need extra feeding and frequent watering.",
+      "Sunlight": "The cactus grows best in bright indirect sunlight. Place it near a south-facing window or another location that receives at least 6 hours of indirect sunlight per day. Make sure to keep the cactus away from direct sunlight during the hottest months of the year to protect it from being harmed by harsh temperatures.",
+      "Soil": "Well-draining potting mix would benefit this plant the most. Plant it in a specifically combined for cactuses and succulents potting mix. You can also add sand or perlite to your regular substrate in equal parts to improve drainage.",
+      "Propagation": "The best way to propagate this cactus is through stem cuttings. Simply cut off a section from the top of a stem with a sharp blade at a 45-degree angle. Let the cut piece of stem dry out for a few days, and place it in a container of cactus mix afterward. Give it an infrequent light drink, and the cutting should root in a few weeks.",
+      "Temperature": "An ideal temperature for growing Toothpick Saguaro indoors is 60-90 ˚F (15-32˚C). This cactus can tolerate higher temperatures but does not like cold drafts or temperatures below 50 ˚F (10 ˚C).",
+      "Container": "Plant Toothpick Cactus in a container with drainage holes at the bottom. Opt for porous organic material such as unglazed clay or terra cotta, which ensures proper water evaporation.",
+      "Popularity": "2,112 people already have this plant 125 people have added this plant to their wishlists",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
+  },
+  {
+    "scientificName": "Celosia argentea",
+    "fullDescription": "Decorate your garden with colorful annual plants that will quickly fill the free space and give a lot of flowers.",
+    "images": [
+      "https://strapi.myplantin.com/large_Plumed_cockscomb_Celosia.argentea_Buton_Island_min_c89b66ad05.webp",
+      "https://strapi.myplantin.com/large_Depositphotos_382863496_L_min_65f6612057.webp",
+      "https://strapi.myplantin.com/large_Depositphotos_60035867_L_min_9c84007a5c.webp"
+    ],
+    "care": {
+      "Water": "Water the plant abundantly from time to time, and in dry weather, add spraying to ensure sufficient humidity. However, when spraying, avoid getting water on the flowers. The best time to water and moisten is in the morning so that the Celosia argentea has time to dry out by the evening.",
+      "Pruning": "Regularly trimming your Celosia argentea will positively affect flowering, encouraging more flowers. You can also pinch off the plant's stems to encourage bushy growth.",
+      "Fertilizer": "Celosia argentea likes fertilizers every month; for example, you can apply liquid nitrogen fertilizers. Also, use fish emulsion and seaweed to feed your plant.",
+      "Sunlight": "Celosia argentea needs a lot of light, so the best place to grow it is a sunny, south-facing window. You can also grow this plant outside.",
+      "Soil": "Silver Cock's Comb can grow on poor soil, but rich in organic matter and well-drained soil will ensure active growth and abundant plant flowering. Choose soil with a neutral level of acidity (6-6.5).",
+      "Propagation": "Use seeds to propagate your plant. To do this, spread the seeds evenly over a layer of well-balanced soil, cover them with soil a little bit, and keep the mixture moist. Remember to monitor the temperature as it should be 80-85°F (27-29°C). The seeds will germinate within two weeks.",
+      "Temperature": "Since we identify this plant as a tropical resident, it likes the Mediterranean climate, namely heat, and humidity. The ideal temperature for Silver Cock's Comb is 41-77°F (5-25°C). Avoid overcooling the plant and remove the plant from the yard in time in case of frost.",
+      "Container": "This plant is often grown outdoors, but if you want to grow it indoors, choose spacious pots because it grows quickly. Make sure the container has drainage holes.",
+      "Popularity": "14,728 people already have this plant 2,507 people have added this plant to their wishlists",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
+  },
+  {
+    "scientificName": "Cactus Cosmic",
+    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners. The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
+    "images": [
+      "https://strapi.myplantin.com/large_main_282701f5-b57f-44ab-b0ce-3f1e5b24e897.webp",
+      "https://strapi.myplantin.com/medium_Kosmic_Kaktus_d9e84ca597.webp",
+      "https://strapi.myplantin.com/medium_menu_8fdf8c1c-a5f9-4a94-b7a2-8b2a4f452a58.webp"
+    ],
+    "care": {
+      "Water": "You need to understand which species of cacti your plant is to get detailed instructions. However, cacti, in general, do not need much water. Water them every few weeks.",
+      "Pruning": "Cacti sold as Kosmik cactus are small and don’t need pruning.",
+      "Fertilizer": "You can use fertilizer for succulents. Two times a year  – in spring and in summer – is enough.",
+      "Sunlight": "Place your plant in the warmest and sunniest place in your home. However, this can differ for different cacti species.",
+      "Soil": "Cacti like sandy and dry soil with good drainage. Use a mix for succulents.",
+      "Propagation": "Check the page of the exact species of your Kosmik cactus. Most cacti can be propagated via stem cuttings or seeds.",
+      "Temperature": "This depends on the exact species of your plant. Generally, cacti will tolerate any indoor temperatures. Some of them can also tolerate temperatures below the freezing point, while others can’t.",
+      "Popularity": "118,984 people already have this plant, 10,992 people have added this plant to their wishlists.",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
+  },
+  {
+    "scientificName": "Cactus Cosmic",
+    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners. The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
+    "images": [
+      "https://strapi.myplantin.com/large_main_282701f5-b57f-44ab-b0ce-3f1e5b24e897.webp",
+      "https://strapi.myplantin.com/medium_Kosmic_Kaktus_d9e84ca597.webp",
+      "https://strapi.myplantin.com/medium_menu_8fdf8c1c-a5f9-4a94-b7a2-8b2a4f452a58.webp"
+    ],
+    "care": {
+      "Water": "Water the Chinese banyan as soon as the soil becomes dry on one centimeter, water so as to moisten all of it. During a growth period (spring, summer), watering should be regular - once or twice a week - but measured in order not to asphyxiate the roots of plants. In a fall, space the waterings gently, until winter.",
+      "Pruning": "Use sharp pruning shears to remove the sucker branches and the errant branches that are growing in the wrong direction or making it difficult to fertilize the tree. Since Chinese banyan has a conical habit, trim the tree as per its natural shape. Trimming should be done every week during the summer.",
+      "Fertilizer": "Mix the recommended amount of liquid fertilizer and water in a watering can. Then simply pour the mix into the soil as if you're watering the plant.",
+      "Sunlight": "Requires either part sun or part shade, does well in filtered light for most of the day.",
+      "Soil": "Cacti like sandy and dry soil with good drainage. Use a mix for succulents.",
+      "Propagation": "Chinese banyan can be propagated by cuttings, which can be taken from the tips and rooted. Alternatively, you can do eye cuttings.",
+      "Temperature": "Temperatures hovering around 60 to 70 or 75°F (15 to 25°C) are perfect if kept all year round.",
+      "Container": "You can use any container you wish, provided that it’s well-drained. Cacti can survive anything except drowning.",
+      "Popularity": "118,984 people already have this plant, 10,992 people have added this plant to their wishlists.",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
+  },
+  {
     "scientificName": "A fruiting vegetable plant",
-    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners.  The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
-    "fullDescription2": "The Ficus Ginseng is a very popular indoor tree species for Bonsai beginners. It has a thick, pot-bellied trunk, similar to the Ginseng root. The leaves are small and oval-shaped, and the tree can be trained into various shapes. It prefers bright, indirect light and should be watered when the top inch of soil is dry. The Ficus Ginseng is known for its resilience and can tolerate neglect, making it an excellent choice for those new to Bonsai cultivation.",
+    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners. The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
     "images": [
       "https://strapi.myplantin.com/large_bonsai_ginseng_or_ficus_retusa_also_known_as_banya_2021_10_17_19_41_17_utc_min_f632905789.webp",
       "https://strapi.myplantin.com/medium_menu_933fef76-6073-4b49-8873-1b96ccbe34b4.webp",
       "https://strapi.myplantin.com/large_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp"
-    ]
+    ],
+    "care": {
+      "Water": "Water the Chinese banyan as soon as the soil becomes dry on one centimeter, water so as to moisten all of it. During a growth period (spring, summer), watering should be regular - once or twice a week - but measured in order not to asphyxiate the roots of plants. In a fall, space the waterings gently, until winter.",
+      "Pruning": "Use sharp pruning shears to remove the sucker branches and the errant branches that are growing in the wrong direction or making it difficult to fertilize the tree. Since Chinese banyan has a conical habit, trim the tree as per its natural shape. Trimming should be done every week during the summer.",
+      "Fertilizer": "Mix the recommended amount of liquid fertilizer and water in a watering can. Then simply pour the mix into the soil as if you're watering the plant.",
+      "Sunlight": "Requires either part sun or part shade, does well in filtered light for most of the day.",
+      "Soil": "Loam soil offers a great balance of silt, sand, and clay as well as a bit of hummus.",
+      "Propagation": "Chinese banyan can be propagated by cuttings, which can be taken from the tips and rooted. Alternatively, you can do eye cuttings.",
+      "Temperature": "Temperatures hovering around 60 to 70 or 75°F (15 to 25°C) are perfect if kept all year round.",
+      "Container": "Choose a pot with drainage holes, which also ensures potting soil doesn't stay too wet after watering your houseplants. The excess can freely escape out the bottom of the container, allowing oxygen to make its way to plant roots.",
+      "Popularity": "118,984 people already have this plant, 10,992 people have added this plant to their wishlists.",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
   },
-  "7": {
+  {
     "scientificName": "A fruiting vegetable plant",
-    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners.  The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
-    "fullDescription2": "The Ficus Ginseng is a very popular indoor tree species for Bonsai beginners. It has a thick, pot-bellied trunk, similar to the Ginseng root. The leaves are small and oval-shaped, and the tree can be trained into various shapes. It prefers bright, indirect light and should be watered when the top inch of soil is dry. The Ficus Ginseng is known for its resilience and can tolerate neglect, making it an excellent choice for those new to Bonsai cultivation.",
+    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners. The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
     "images": [
       "https://strapi.myplantin.com/large_bonsai_ginseng_or_ficus_retusa_also_known_as_banya_2021_10_17_19_41_17_utc_min_f632905789.webp",
       "https://strapi.myplantin.com/medium_menu_933fef76-6073-4b49-8873-1b96ccbe34b4.webp",
       "https://strapi.myplantin.com/large_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp"
-    ]
-  },
-  "8": {
-    "scientificName": "A fruiting vegetable plant",
-    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners.  The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
-    "fullDescription2": "The Ficus Ginseng is a very popular indoor tree species for Bonsai beginners. It has a thick, pot-bellied trunk, similar to the Ginseng root. The leaves are small and oval-shaped, and the tree can be trained into various shapes. It prefers bright, indirect light and should be watered when the top inch of soil is dry. The Ficus Ginseng is known for its resilience and can tolerate neglect, making it an excellent choice for those new to Bonsai cultivation.",
-    "images": [
-      "https://strapi.myplantin.com/large_bonsai_ginseng_or_ficus_retusa_also_known_as_banya_2021_10_17_19_41_17_utc_min_f632905789.webp",
-      "https://strapi.myplantin.com/medium_menu_933fef76-6073-4b49-8873-1b96ccbe34b4.webp",
-      "https://strapi.myplantin.com/large_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp"
-    ]
-  },
-  "9": {
-    "scientificName": "A fruiting vegetable plant",
-    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners.  The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
-    "fullDescription2": "The Ficus Ginseng is a very popular indoor tree species for Bonsai beginners. It has a thick, pot-bellied trunk, similar to the Ginseng root. The leaves are small and oval-shaped, and the tree can be trained into various shapes. It prefers bright, indirect light and should be watered when the top inch of soil is dry. The Ficus Ginseng is known for its resilience and can tolerate neglect, making it an excellent choice for those new to Bonsai cultivation.",
-    "images": [
-      "https://strapi.myplantin.com/large_bonsai_ginseng_or_ficus_retusa_also_known_as_banya_2021_10_17_19_41_17_utc_min_f632905789.webp",
-      "https://strapi.myplantin.com/medium_menu_933fef76-6073-4b49-8873-1b96ccbe34b4.webp",
-      "https://strapi.myplantin.com/large_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp"
-    ]
-  },
-  "10": {
-    "scientificName": "A fruiting vegetable plant",
-    "fullDescription": "Ficus microcarpa, also known as Chinese banyan, Malayan banyan, Indian laurel, curtain fig, or gajumaru, is a tree in the fig family Moraceae. It is native in a range from China through tropical Asia and the Caroline Islands to Australia. It’s a popular indoor tree species for Bonsai beginners.  The ficus genus belongs to the family of mulberry plants (Moraceae) and is the most popular indoor tree species for beginners at Bonsai. There is differing information about the number of existing ficus species, there may be between 800 and 2000. They live on all continents in the tropical regions and are very suitable for being kept as indoor Bonsai. Some figs can become very large trees with a crown circumference of more than 300 m (1000 ft). Typical for all fig Bonsai species is their milky latex sap, which will leak from wounds or cuts. The tropical figs are evergreen trees, small shrubs or even climbing plants. The Ficus Ginseng has a thick, pot-bellied trunk, similar to the Ginseng root.",
-    "fullDescription2": "The Ficus Ginseng is a very popular indoor tree species for Bonsai beginners. It has a thick, pot-bellied trunk, similar to the Ginseng root. The leaves are small and oval-shaped, and the tree can be trained into various shapes. It prefers bright, indirect light and should be watered when the top inch of soil is dry. The Ficus Ginseng is known for its resilience and can tolerate neglect, making it an excellent choice for those new to Bonsai cultivation.",
-    "images": [
-      "https://strapi.myplantin.com/large_bonsai_ginseng_or_ficus_retusa_also_known_as_banya_2021_10_17_19_41_17_utc_min_f632905789.webp",
-      "https://strapi.myplantin.com/medium_menu_933fef76-6073-4b49-8873-1b96ccbe34b4.webp",
-      "https://strapi.myplantin.com/large_main_7f0ecb57-e212-438a-bf04-89b04937e7f4.webp"
-    ]
+    ],
+    "care": {
+      "Water": "Water the Chinese banyan as soon as the soil becomes dry on one centimeter, water so as to moisten all of it. During a growth period (spring, summer), watering should be regular - once or twice a week - but measured in order not to asphyxiate the roots of plants. In a fall, space the waterings gently, until winter.",
+      "Pruning": "Use sharp pruning shears to remove the sucker branches and the errant branches that are growing in the wrong direction or making it difficult to fertilize the tree. Since Chinese banyan has a conical habit, trim the tree as per its natural shape. Trimming should be done every week during the summer.",
+      "Fertilizer": "Mix the recommended amount of liquid fertilizer and water in a watering can. Then simply pour the mix into the soil as if you're watering the plant.",
+      "Sunlight": "Requires either part sun or part shade, does well in filtered light for most of the day.",
+      "Soil": "Loam soil offers a great balance of silt, sand, and clay as well as a bit of hummus.",
+      "Propagation": "Chinese banyan can be propagated by cuttings, which can be taken from the tips and rooted. Alternatively, you can do eye cuttings.",
+      "Temperature": "Temperatures hovering around 60 to 70 or 75°F (15 to 25°C) are perfect if kept all year round.",
+      "Container": "Choose a pot with drainage holes, which also ensures potting soil doesn't stay too wet after watering your houseplants. The excess can freely escape out the bottom of the container, allowing oxygen to make its way to plant roots.",
+      "Popularity": "118,984 people already have this plant, 10,992 people have added this plant to their wishlists.",
+      "Common Pests": "Susceptible to spider mites and scale insects. Regularly inspect leaves and stems.",
+      "Frequent Diseases": "Prone to root rot if overwatered. Ensure proper drainage and avoid waterlogged soil.",
+      "Botanist Tips": "Maintain high humidity around the Chinese banyan by misting the leaves or using a pebble tray with water."
+    }
   }
 
-}
+]

@@ -1,3 +1,4 @@
+
 const { MongoClient } = require('mongodb');
 const fs = require('fs').promises;
 const path = require('path');
@@ -16,16 +17,30 @@ async function insertPlantDetails() {
     console.log('Connected to MongoDB');
     const database = client.db('plantdb');
     const collection = database.collection('plantDetails');
-    const plantDetailsData = JSON.parse(await fs.readFile('./data/PlantDetails.json', 'utf8'));
-    const plantDetails = Object.entries(plantDetailsData).map(([idStr, detail]) => ({
-      _id: parseInt(idStr, 10),
+
+    // Read the updated PlantDetails.json (which is an array)
+    const plantDetailsArray = JSON.parse(await fs.readFile('./data/PlantDetails.json', 'utf8'));
+
+    // Map the data to the desired structure, including the care object
+    const documentsToInsert = plantDetailsArray.map(detail => ({
       scientificName: detail.scientificName,
       fullDescription: detail.fullDescription,
       images: detail.images,
+      care: detail.care || {} // Include the care object, default to empty if not present
     }));
+
+    // Clear existing data
     await collection.deleteMany({});
-    const result = await collection.insertMany(plantDetails);
-    console.log(`Inserted ${result.insertedCount} plant details successfully`);
+    console.log('Cleared existing plantDetails collection.');
+
+    // Insert new data
+    if (documentsToInsert.length > 0) {
+      const result = await collection.insertMany(documentsToInsert);
+      console.log(`Inserted ${result.insertedCount} plant details successfully`);
+    } else {
+      console.log('No plant details to insert.');
+    }
+
   } catch (error) {
     console.error('Error inserting plant details:', error);
     throw error;

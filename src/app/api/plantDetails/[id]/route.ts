@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const id = parseInt(params.id, 10);
-  if (isNaN(id)) {
-    return NextResponse.json({ error: 'Invalid plant ID' }, { status: 400 });
+  const id = params.id;
+  if (!ObjectId.isValid(id)) {
+    return NextResponse.json({ error: 'Invalid ObjectId' }, { status: 400 });
   }
   const uri = process.env.MONGODB_URI;
   if (!uri) {
@@ -15,8 +15,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     await client.connect();
     const database = client.db('plantdb');
     const collection = database.collection('plantDetails');
-    // Use type assertion to handle numeric _id
-    const detail = await collection.findOne({ _id: id as any });
+    const detail = await collection.findOne({ _id: new ObjectId(id) });
     return NextResponse.json(detail || {});
   } catch (error) {
     console.error('Error fetching plant detail:', error);

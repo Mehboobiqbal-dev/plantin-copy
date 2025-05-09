@@ -2,21 +2,18 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import plantProblem from '../../data/PlantProblemData.json';
-import plantDetails from '../../data/ProblemDetail.json';
 import { FiMessageSquare } from 'react-icons/fi';
 import RelatedProblem from '../../components/RelatedProblem';
+import { ClipLoader } from 'react-spinners';
 
-// Define interface for plant problem
 interface PlantProblem {
-  id: number;
+  _id: string;
   category: string;
   image: string;
   title: string;
   description: string;
 }
 
-// Define interface for problem details
 interface ProblemDetail {
   scientificName: string;
   fullDescription: string;
@@ -24,12 +21,6 @@ interface ProblemDetail {
   images: string[];
 }
 
-// Define type for plantDetails
-interface PlantDetails {
-  [key: string]: ProblemDetail;
-}
-
-// Define prop interface for StickyBotanistPost
 interface StickyBotanistPostProps {
   problemId: string;
   isSticky: boolean;
@@ -40,67 +31,88 @@ const StickyBotanistPost = ({ problemId, isSticky }: StickyBotanistPostProps) =>
 
   return (
     <div
-      className={`${isSticky ? 'sticky top-25' : ''} ${
-        isSticky ? 'py-4 px-3' : 'py-6 px-4'
-      } bg-white rounded-xl shadow-md transition-all duration-300`}
-    >
-      <div className={`flex items-center ${isSticky ? 'space-x-3' : 'space-x-4'}`}>
-        <div>
-          <h3 className={`${isSticky ? 'text-lg' : 'text-xl'} font-semibold text-gray-900`}>
-            Botanist Help
-          </h3>
-          <p className={`text-gray-600 ${isSticky ? 'text-sm' : 'text-base'}`}>
-            Send your request and get professional care guide.
-          </p>
-        </div>
-        <img
-          src="https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fbanner_botanist_help_bb0b0c7058.webp&w=384&q=75"
-          alt="Plant illustration"
-          className={`object-contain rounded-lg ${
-            isSticky ? 'w-[126px] h-[140px]' : 'w-[180px] h-[200px]'
-          }`}
-        />
+    className={`${isSticky ? 'sticky top-25' : ''} ${
+      isSticky ? 'py-4 px-3' : 'py-6 px-4' 
+    } sticky top-25 py-4 px-3 bg-white rounded-xl shadow-md transition-all duration-300`}
+  >
+    <div className={`flex items-center ${isSticky ? 'space-x-3' : 'space-x-4'}`}>
+      <div>
+        <h3 className={`${isSticky ? 'text-lg' : 'text-xl'} font-semibold text-gray-900`}>
+          Botanist Help
+        </h3>
+        <p className={`text-gray-600 ${isSticky ? 'text-sm' : 'text-base'}`}>
+          Send your request and get professional care guide.
+        </p>
       </div>
-      <button
+      <img
+        src="https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fbanner_botanist_help_bb0b0c7058.webp&w=384&q=75"
+        alt="Plant illustration"
+        className={`object-contain rounded-lg ${
+          isSticky ? 'w-[126px] h-[140px]' : 'w-[180px] h-[200px]'
+        }`}
+      />
+    </div>
+    <button
         onClick={() => router.push(`/problem/${problemId}/diagnose`)}
         className="mt-4 flex items-center gap-2 px-5 py-2 bg-emerald-500 text-white rounded-full border border-emerald-500 hover:bg-emerald-600 transition duration-200"
       >
-        <FiMessageSquare size={isSticky ? 14 : 18} /> Ask the Botanist
-      </button>
-    </div>
-  );
+      <FiMessageSquare size={isSticky ? 14 : 18} /> Ask the Botanist
+    </button>
+  </div>
+);
 };
+
 
 const Problem = () => {
   const { problemId } = useParams();
   const router = useRouter();
-
-  // Safely convert problemId to string
-  const id = Array.isArray(problemId) ? problemId[0] : problemId ?? '';
-
-  // Determine plant and details from your data sources
-  const plant = (plantProblem as { Data: PlantProblem[] }).Data.find(
-    (p) => p.id === parseInt(id, 10)
-  );
-  const detail = id ? (plantDetails as PlantDetails)[id] : undefined;
-
-  // Always declare hooks at the top to ensure consistent order
+  const [plant, setPlant] = useState<PlantProblem | null>(null);
+  const [detail, setDetail] = useState<ProblemDetail | null>(null);
   const [isStickyActive, setIsStickyActive] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const damageSectionRef = useRef<HTMLElement | null>(null);
 
-  // Early return AFTER the hooks are declared
-  if (!plant) {
-    router.replace('/problems/all-problem');
-    return null;
-  }
+  const id = Array.isArray(problemId) ? problemId[0] : problemId ?? '';
 
-  // Use detailed images if available. Otherwise, use a single plant image.
-  const images = detail?.images?.length ? detail.images : [plant.image];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch problem summary
+        const problemsResponse = await fetch('/api/problems');
+        if (!problemsResponse.ok) {
+          throw new Error(`Failed to fetch problems: ${problemsResponse.status}`);
+        }
+        const problemsData = await problemsResponse.json();
+        console.log('Problems fetched:', problemsData.Data);
+        const foundProblem = problemsData.Data.find((p: PlantProblem) => p._id === id);
+        if (!foundProblem) {
+          throw new Error(`Problem not found for id: ${id}`);
+        }
+        setPlant(foundProblem);
 
-  // Split the "SignOfDamage" text into an array of points.
-  const damagePoints = detail?.SignOfDamage
-    ? detail.SignOfDamage.split('\n').filter(Boolean)
-    : [];
+        // Fetch problem details
+        const detailResponse = await fetch(`/api/problemDetails/${id}`);
+        console.log('Detail Response Status:', detailResponse.status);
+        if (!detailResponse.ok) {
+          const errorText = await detailResponse.text();
+          console.error('Detail Response Error:', errorText);
+          throw new Error(`Failed to fetch problem details: ${errorText}`);
+        }
+        const detailData = await detailResponse.json();
+        console.log('Detail Data:', detailData);
+        setDetail(detailData);
+      } catch (err: any) {
+        console.error('Error fetching data:', err);
+        setError(err.message || 'An error occurred while fetching problem details');
+        router.replace('/problems/all-problem');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchData();
+  }, [id, router]);
 
   useEffect(() => {
     const currentRef = damageSectionRef.current;
@@ -108,7 +120,9 @@ const Problem = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.target === currentRef) {
-            setIsStickyActive(entry.isIntersecting);
+            const isIntersecting = entry.isIntersecting;
+            setIsStickyActive(!isIntersecting);
+            console.log('IntersectionObserver: isStickyActive set to', !isIntersecting);
           }
         });
       },
@@ -117,34 +131,52 @@ const Problem = () => {
 
     if (currentRef) {
       observer.observe(currentRef);
+      console.log('Observing damageSectionRef');
     }
     return () => {
       if (currentRef) {
         observer.unobserve(currentRef);
+        console.log('Unobserving damageSectionRef');
       }
     };
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#04BF94" size={40} />
+      </div>
+    );
+  }
+
+  if (error || !plant) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-red-500 text-lg">{error || 'Problem not found'}</p>
+      </div>
+    );
+  }
+
+  const images = detail?.images?.length ? detail.images : [plant.image];
+  const damagePoints = detail?.SignOfDamage
+    ? detail.SignOfDamage.split('\n').filter(Boolean)
+    : [];
+
   return (
     <div className="bg-white min-h-screen">
-      {/* Header */}
       <header className="mb-6">
         <div className="flex items-center"></div>
       </header>
-
-      {/* Layout container for main content and right sidebar */}
       <div className="flex-1 space-y-6 max-w-7xl mx-auto px-4">
-        {/* Left Column: Main Content */}
         <div className="flex-grow flex items-start justify-start text-left">
           <div className="text-sm">
             <span className="text-gray-700">PlantIn</span>
-            <span className="mx-1 text-gray-700"> &gt; </span>
+            <span className="mx-1 text-gray-700"> > </span>
             <span className="text-gray-600">Plant Problem</span>
-            <span className="mx-1 text-gray-700"> &gt; </span>
+            <span className="mx-1 text-gray-700"> > </span>
             <span className="text-gray-500">{plant.title}</span>
           </div>
         </div>
-        {/* Top Section: Image and Text */}
         <div className="flex flex-col md:flex-row gap-6">
           <div className="flex-1">
             {images.length > 0 && (
@@ -155,9 +187,7 @@ const Problem = () => {
                     src={src}
                     alt={`${plant.title} ${idx + 1}`}
                     className={`${idx === 0 ? 'md:row-span-2' : ''} w-full h-full object-cover rounded-lg shadow-md cursor-pointer`}
-                    onClick={() => {
-                      // Add your image click handler logic if needed.
-                    }}
+                    onClick={() => {}}
                   />
                 ))}
               </div>
@@ -176,14 +206,13 @@ const Problem = () => {
             </section>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Signs of Damage Section with ref for Intersection Observer */}
+        <div className="flex flex-col md:flex-row gap-6 min-h-screen">
           {damagePoints.length > 0 && (
             <section ref={damageSectionRef} className="mt-10 flex-1">
-              <h2 className="text-3xl text-left font-semibold text-black mb-2">
+              <h2 className="text-3xl text-left font-bold text-black mb-2">
                 Signs of Damage
               </h2>
-              <ul className="list-disc list-inside text-left mt-3 pl-4">
+              <ul className="list-disc list-inside text-left mt-3">
                 {damagePoints.map((point: string, index: number) => (
                   <li className="font-normal" key={index}>
                     {point}
@@ -195,7 +224,7 @@ const Problem = () => {
               </article>
               <div className="relative flex flex-col items-center bg-blue-100 md:p-10 p-4 pt-12 rounded-3xl mt-5">
                 <img
-                  src="data:image/png;base64,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"
+                  src="data:image/png;base64,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"
                   alt="Premium icon"
                   className="w-12 h-12 mb-4 mx-auto"
                 />
@@ -215,8 +244,6 @@ const Problem = () => {
               </div>
             </section>
           )}
-
-          {/* Call to Action */}
           <div className="w-full md:w-1/3">
             <StickyBotanistPost problemId={id} isSticky={isStickyActive} />
           </div>

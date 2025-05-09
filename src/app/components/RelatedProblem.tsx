@@ -1,36 +1,48 @@
-"use client";
+'use client';
 
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import problemData from "../data/PlantProblemData.json";
 
-// Define type for problem data
 interface ProblemItem {
-  id: number; // Changed from string to number to match JSON data
-  category: string;
+  _id: string;
   image: string;
   title: string;
   description: string;
+  category: string;
 }
 
-// Define props interface
 interface RelatedProblemProps {
   count?: number;
 }
 
 const RelatedProblem: React.FC<RelatedProblemProps> = ({ count = 4 }) => {
   const router = useRouter();
-  const items = (problemData as { Data: ProblemItem[] }).Data.slice(0, count);
+  const [items, setItems] = useState<ProblemItem[]>([]);
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const response = await fetch('/api/problems');
+        if (!response.ok) throw new Error('Failed to fetch problems');
+        const data = await response.json();
+        setItems(data.Data.slice(0, count));
+      } catch (error) {
+        console.error('Error fetching problems:', error);
+        setItems([]);
+      }
+    };
+
+    fetchProblems();
+  }, [count]);
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold text-left text-gray-900">More Problems</h2>
-
       <div className="flex space-x-4 overflow-x-auto no-scrollbar">
         {items.map((problem) => (
           <div
-            key={problem.id} // Use id directly, assuming unique IDs in JSON
-            onClick={() => router.push(`/problem/${problem.id}`)}
+            key={problem._id}
+            onClick={() => router.push(`/problem/${problem._id}`)}
             className="flex-none w-64 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition-shadow cursor-pointer"
           >
             <img
@@ -44,8 +56,6 @@ const RelatedProblem: React.FC<RelatedProblemProps> = ({ count = 4 }) => {
             </div>
           </div>
         ))}
-
-        {/* Discover all card */}
         <div className="flex-none w-64 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col items-center justify-between">
           <img
             src="https://strapi.myplantin.com/twig_e3ab677a36.webp"
@@ -60,7 +70,6 @@ const RelatedProblem: React.FC<RelatedProblemProps> = ({ count = 4 }) => {
           </button>
         </div>
       </div>
-
       <style jsx global>{`
         .no-scrollbar::-webkit-scrollbar {
           display: none;

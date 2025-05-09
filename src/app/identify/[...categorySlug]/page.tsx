@@ -8,7 +8,7 @@ interface Category {
 }
 
 interface Plant {
-  id: number;
+  _id: string;
   name: string;
   category: string;
   image: string;
@@ -64,7 +64,7 @@ const getPlants = async (): Promise<PlantData> => {
     const plantsFromDb = await collection.find({}).toArray();
     // Map MongoDB documents to Plant interface
     const plants: Plant[] = plantsFromDb.map((doc) => ({
-      id: doc.id,
+      _id: doc._id.toString(),
       name: doc.name,
       category: doc.category,
       image: doc.image,
@@ -114,7 +114,7 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="text-sm">
               <span className="text-gray-700">PlantIn</span>
-              <span className="mx-1 text-gray-700"> &gt; </span>
+              <span className="mx-1 text-gray-700">  </span>
               <span className="text-gray-600">
                 {categoryDisplayNames[selectedCategory]} Identifier
               </span>

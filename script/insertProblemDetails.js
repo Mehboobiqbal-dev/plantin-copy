@@ -1,0 +1,48 @@
+const { MongoClient } = require('mongodb');
+const fs = require('fs').promises;
+const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({ path: path.resolve(__dirname, '.env.local') });
+
+async function insertProblemDetails() {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error('MONGODB_URI is not defined in .env.local');
+  }
+  const client = new MongoClient(uri);
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+    const database = client.db('plantdb');
+    const collection = database.collection('problemDetails');
+    const detailData = [
+      {
+        "id": 1,
+        "titleForLookup": "Thrips",
+        "scientificName": "Thysanoptera (Thrips)",
+        "fullDescription": "These insects are also known by their scientific name Thysanoptera, and there are about 5 000 species of them. These tiny insects prefer hot climates, so mostly they can be found in hotter regions of the world. They can transmit various plant viruses, and due to their tiny size (their maximum size is about an inch), they can enter even the least noticeable areas of the plant and damage it. Despite their destructive nature, a few species of these insects prey on mites or scale insects. Thrips are primarily active in bigger groups and tend to choose the garden vegetables or flowers (especially roses and gladioli) as their hosts. What’s interesting about these insects is that they have their favorite colors. And they are mostly white and yellow, which means no good for the light-colored flowers.",
+        "SignOfDamage": "The plant becomes paler. If you notice that the plant is discolored and silverish, it is probably because of Thrips.\nDeformation of plant’s growth. This deformation also affects the new growths, making them weaker and wobbly.\nTiny spots remind the rice in the plant. The naked eye barely notices them, but they can indicate Thrips activity.\nTiny black specks. Another result of the insect’s activity, these black specks are waste left by them.",
+        "images": [
+          "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Flarge_Thrips_Damaging_the_Leaf_ba19b54467.webp&w=1920&q=75",
+          "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Flarge_Thrip_on_the_Ground_72420f03dd.webp&w=1920&q=75",
+          "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Flarge_Thrip_on_the_Leaf_39cd427c85.webp&w=1920&q=75"
+        ]
+      }
+    ];
+    await collection.deleteMany({});
+    const result = await collection.insertMany(detailData);
+    console.log(`Inserted ${result.insertedCount} problem details successfully`);
+  } catch (error) {
+    console.error('Error inserting problem details:', error);
+    throw error;
+  } finally {
+    await client.close();
+    console.log('MongoDB connection closed');
+  }
+}
+
+insertProblemDetails().catch(error => {
+  console.error('Script failed:', error);
+  process.exit(1);
+});

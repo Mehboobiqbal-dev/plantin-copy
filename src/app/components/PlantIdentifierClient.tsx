@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useRouter } from "next/navigation";
-import CollapsibleBox from "../components/ColapsibleBox";
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { ClipLoader } from 'react-spinners';
+import CollapsibleBox from '../components/ColapsibleBox';
 
 interface Category {
   name: string;
@@ -10,7 +11,7 @@ interface Category {
 }
 
 interface Plant {
-  id: number;
+  _id: string;
   name: string;
   category: string;
   image: string;
@@ -36,20 +37,6 @@ interface PlantIdentifierClientProps {
   categories: Category[];
   plantCounts: { [key: string]: number };
 }
-
-const categoryDisplayNames: { [key: string]: string } = {
-  "All plants": "Plant",
-  Houseplants: "Houseplant",
-  Cactuses: "Cactus",
-  Succulents: "Succulent",
-  Flowers: "Flower",
-  Trees: "Tree",
-  "Veggies & Fruit": "Veggie & Fruit",
-  Grasses: "Grass",
-  Shrubs: "Shrub",
-  Ferns: "Fern",
-  Herbs: "Herb",
-};
 
 const PlantIdentifierClient: React.FC<PlantIdentifierClientProps> = ({
   selectedCategory,
@@ -224,100 +211,109 @@ const PlantIdentifierClient: React.FC<PlantIdentifierClientProps> = ({
         </div>
       </aside>
       <main className="w-full md:w-2/3 lg:w-3/4 md:pl-8">
-        <nav>
-          <div className="max-w-7xl mx-auto px-4">
-            <ul className="flex space-x-4 py-2 overflow-x-hidden hover:overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing">
-              {categories.map((cat) => (
-                <li
-                  key={cat.slug}
-                  onClick={() => router.push(`/identify/${cat.slug}`)}
-                  className={`
-                    whitespace-nowrap cursor-pointer px-3 py-1
-                    ${
-                      cat.name === selectedCategory
-                        ? "text-green-600 font-medium"
-                        : "text-gray-600 hover:text-blue-600"
-                    }
-                  `}
-                >
-                  {cat.name}
-                  <span className="ml-2 text-xs text-gray-500">
-                    ({plantCounts[cat.name]} Plants)
-                  </span>
-                </li>
-              ))}
-            </ul>
+        {displayedPlants.length === 0 ? (
+          <div className="flex justify-center items-center h-64">
+            <ClipLoader color="#04BF94" size={40} />
           </div>
-        </nav>
-        <div className="relative md:p-5 p-4 border rounded-xl border-gray-200">
-          <p className="text-lg text-gray-700">
-            Imagine walking down the street and noticing fantastic flowers
-            blooming in someone’s garden. In fact, these queens – you think
-            – would fit perfectly in your backyard. But what are they
-            called? Your plant knowledge from 8th-grade biology isn’t
-            enough...
-          </p>
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="text-blue-600 hover:underline mt-4 inline-block focus:outline-none"
-          >
-            {expanded ? "Less ID info" : "More ID info"}
-          </button>
-          {expanded && (
-            <div className="mt-4 border rounded-xl border-gray-300 p-4">
-              <div className="border-gray-300 pt-4">
-                <p className="text-lg text-gray-700">
-                  Well, that’s the kind of situation a plant identifier was
-                  created for. The plant identifier app is an online
-                  alternative to manual plant identification. Let’s learn a
-                  bit more about how to identify a plant both manually and
-                  with some help from digital technologies.
-                </p>
+        ) : (
+          <>
+            <nav>
+              <div className="max-w-7xl mx-auto px-4">
+                <ul className="flex space-x-4 py-2 overflow-x-hidden hover:overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing">
+                  {categories.map((cat) => (
+                    <li
+                      key={cat.name}
+                      onClick={() => router.push(`/identify/${cat.slug}`)}
+                      className={`
+                        whitespace-nowrap cursor-pointer px-3 py-1
+                        ${
+                          cat.name === selectedCategory
+                            ? 'text-green-600 font-medium'
+                            : 'text-gray-600 hover:text-blue-600'
+                        }
+                      `}
+                    >
+                      {cat.name}
+                      <span className="ml-2 text-xs text-gray-500">
+                        ({plantCounts[cat.name]} Plants)
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="border-gray-300">
-                <p className="text-lg text-gray-700">
-                  What Kind of Plant Is This? There are almost 400,000
-                  identified plant species in the world. If you want to know
-                  what kind of plant is this shrub you stumbled upon in the
-                  forest, your first option is to ask a biologist. If you
-                  don’t have one at hand, you’ll have to master plant
-                  identification on your own.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
-          {displayedPlants.map((plant) => (
-            <div
-              key={plant.id}
-              className="p-4 shadow rounded bg-white cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => router.push(`/plants/${plant.id}`)}
-            >
-              <img
-                src={plant.image}
-                alt={plant.name}
-                className="w-full h-40 object-cover rounded"
-              />
-              <h5 className="mt-2 text-left font-medium">{plant.name}</h5>
-              <p className="mt-1 text-left text-sm text-gray-500">
-                {plant.description}
+            </nav>
+            <div className="relative md:p-5 p-4 border rounded-xl border-gray-200">
+              <p className="text-lg text-gray-700">
+                Imagine walking down the street and noticing fantastic flowers
+                blooming in someone’s garden. In fact, these queens – you think
+                – would fit perfectly in your backyard. But what are they
+                called? Your plant knowledge from 8th-grade biology isn’t
+                enough...
               </p>
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="text-blue-600 hover:underline mt-4 inline-block focus:outline-none"
+              >
+                {expanded ? 'Less ID info' : 'More ID info'}
+              </button>
+              {expanded && (
+                <div className="mt-4 border rounded-xl border-gray-200 p-4">
+                  <div className="border-gray-200 pt-4">
+                    <p className="text-lg text-gray-700">
+                      Well, that’s the kind of situation a plant identifier was
+                      created for. The plant identifier app is an online
+                      alternative to manual plant identification. Let’s learn a
+                      bit more about how to identify a plant both manually and
+                      with some help from digital technologies.
+                    </p>
+                  </div>
+                  <div className="border-gray-200">
+                    <p className="text-lg text-gray-700">
+                      What Kind of Plant Is This? There are almost 400,000
+                      identified plant species in the world. If you want to know
+                      what kind of plant is this shrub you stumbled upon in the
+                      forest, your first option is to ask a biologist. If you
+                      don’t have one at hand, you’ll have to master plant
+                      identification on your own.
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-          ))}
-        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+              {displayedPlants.map((plant) => (
+                <div
+                  key={plant._id}
+                  className="p-4 shadow rounded bg-white cursor-pointer hover:shadow-lg transition-shadow"
+                  onClick={() => {
+                    console.log('Navigating to plant:', plant._id);
+                    router.push(`/plants/${plant._id}`);
+                  }}
+                >
+                  <img
+                    src={plant.image}
+                    alt={plant.name}
+                    className="w-full h-40 object-cover rounded"
+                  />
+                  <h5 className="mt-2 text-left font-medium">{plant.name}</h5>
+                  <p className="mt-1 text-left text-sm text-gray-500">
+                    {plant.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </main>
-      <style jsx global>
-        {`
-          .no-scrollbar::-webkit-scrollbar {
-            display: none;
-          }
-          .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-        `}
-      </style>
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </>
   );
 };

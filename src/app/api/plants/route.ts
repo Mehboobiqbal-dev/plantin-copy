@@ -10,9 +10,19 @@ export async function GET() {
   try {
     await client.connect();
     const database = client.db('plantdb');
-    const collection = database.collection('plants');
-    const plants = await collection.find({}).toArray();
-    return NextResponse.json({ plants });
+    const plantsCollection = database.collection('plants');
+    const detailsCollection = database.collection('plantDetails');
+    
+    const plants = await plantsCollection.find({}).toArray();
+    const details = await detailsCollection.find({}).limit(4).toArray(); // Limit to 4 details
+    
+    // Map plants to include detailId (first 4 plants get details)
+    const plantsWithDetails = plants.map((plant, index) => ({
+      ...plant,
+      detailId: index < details.length ? details[index]._id : null,
+    }));
+    
+    return NextResponse.json({ plants: plantsWithDetails });
   } catch (error) {
     console.error('Error fetching plants:', error);
     return NextResponse.json({ error: 'Failed to fetch plants' }, { status: 500 });

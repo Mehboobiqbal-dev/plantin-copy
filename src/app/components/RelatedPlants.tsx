@@ -5,23 +5,23 @@ import { useRouter } from 'next/navigation';
 
 // Define interface for plant
 interface Plant {
-  id: number;
+  _id: string;
   name: string;
   description: string;
   image: string;
   category: string;
+  detailId: string | null;
 }
 
 interface RelatedPlantsProps {
-  plantId: string;
+  id: string;
   allPlants: Plant[];
 }
 
-const RelatedPlants: React.FC<RelatedPlantsProps> = ({ plantId, allPlants }) => {
+const RelatedPlants: React.FC<RelatedPlantsProps> = ({ id, allPlants }) => {
   const router = useRouter();
-  const idNum = parseInt(plantId, 10);
   const plants = allPlants
-    .filter(p => p.id !== idNum)
+    .filter(p => p._id !== id)
     .slice(0, 4);
 
   return (
@@ -30,9 +30,9 @@ const RelatedPlants: React.FC<RelatedPlantsProps> = ({ plantId, allPlants }) => 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {plants.map(plant => (
           <div
-            key={plant.id}
+            key={plant._id}
             className="bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow"
-            onClick={() => router.push(`/plants/${plant.id}`)}
+            onClick={() => router.push(`/plants/${plant._id}`)}
           >
             <img
               src={plant.image}

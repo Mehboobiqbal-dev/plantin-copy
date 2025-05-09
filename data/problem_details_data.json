@@ -1,0 +1,64 @@
+[
+  {
+    "_id": "670f3b1a8f1c2d3e4a5b6c80",
+    "titleForLookup": "Thrips",
+    "scientificName": "Thysanoptera (Thrips)",
+    "fullDescription": "These insects are also known by their scientific name Thysanoptera, and there are about 5 000 species of them. These tiny insects prefer hot climates, so mostly they can be found in hotter regions of the world. They can transmit various plant viruses, and due to their tiny size (their maximum size is about an inch), they can enter even the least noticeable areas of the plant and damage it. Despite their destructive nature, a few species of these insects prey on mites or scale insects. Thrips are primarily active in bigger groups and tend to choose the garden vegetables or flowers (especially roses and gladioli) as their hosts. What’s interesting about these insects is that they have their favorite colors. And they are mostly white and yellow, which means no good for the light-colored flowers.",
+    "SignOfDamage": "The plant becomes paler. If you notice that the plant is discolored and silverish, it is probably because of Thrips.\nDeformation of plant’s growth. This deformation also affects the new growths, making them weaker and wobbly.\nTiny spots remind the rice in the plant. The naked eye barely notices them, but they can indicate Thrips activity.\nTiny black specks. Another result of the insect’s activity, these black specks are waste left by them.",
+    "images": [
+      "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Flarge_Thrips_Damaging_the_Leaf_ba19b54467.webp&w=1920&q=75",
+      "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Flarge_Thrip_on_the_Ground_72420f03dd.webp&w=1920&q=75",
+      "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Flarge_Thrip_on_the_Leaf_39cd427c85.webp&w=1920&q=75"
+    ]
+  },
+  {
+    "_id": "670f3b1a8f1c2d3e4a5b6c81",
+    "titleForLookup": "Shot Hole Disease",
+    "scientificName": "Wilsonomyces carpophilus",
+    "fullDescription": "Placeholder description for Shot Hole Disease.",
+    "SignOfDamage": "Small holes in leaves.\nYellowing around holes.",
+    "images": [
+      "https://strapi.myplantin.com/large_Example_of_Shot_Hole_Disease_b1f61159b2.webp"
+    ]
+  },
+  {
+    "_id": "670f3b1a8f1c2d3e4a5b6c82",
+    "titleForLookup": "Shield Bugs",
+    "scientificName": "Pyrrhocoridae",
+    "fullDescription": "Placeholder description for Shield Bugs.",
+    "SignOfDamage": "Sap loss.\nLeaf discoloration.",
+    "images": [
+      "https://strapi.myplantin.com/large_The_Leaf_with_a_Stink_Bug_d2ec8b40a7.webp"
+    ]
+  },
+  {
+    "_id": "670f3b1a8f1c2d3e4a5b6c83",
+    "titleForLookup": "Scale Insects",
+    "scientificName": "Coccoidea",
+    "fullDescription": "Placeholder description for Scale Insects.",
+    "SignOfDamage": "Sticky residue on leaves.\nYellowing leaves.",
+    "images": [
+      "https://strapi.myplantin.com/large_main_scale_insects_9acd41515f.webp"
+    ]
+  },
+  {
+    "_id": "670f3b1a8f1c2d3e4a5b6c84",
+    "titleForLookup": "Peach Leaf Curl",
+    "scientificName": "Taphrina deformans",
+    "fullDescription": "Placeholder description for Peach Leaf Curl.",
+    "SignOfDamage": "Curling leaves.\nRed or purple discoloration.",
+    "images": [
+      "https://strapi.myplantin.com/large_Peach_Leaves_affected_by_Leaf_Curl_fcf405fc24.webp"
+    ]
+  },
+  {
+    "_id": "670f3b1a8f1c2d3e4a5b6c85",
+    "titleForLookup": "Snake Plant Issue",
+    "scientificName": "Dracaena trifasciata",
+    "fullDescription": "Placeholder description for Snake Plant Issue.",
+    "SignOfDamage": "Wilting leaves.\nBrown tips.",
+    "images": [
+      "https://strapi.myplantin.com/large_pexels_teona_swift_6913568_c15c3b11c2.webp"
+    ]
+  }
+]

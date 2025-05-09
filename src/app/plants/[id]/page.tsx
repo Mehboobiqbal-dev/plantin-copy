@@ -2,34 +2,48 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import ClipLoader from 'react-spinners/ClipLoader';
 import ImageLightbox from '../../components/ImageLightbox';
 import PlantCareSection from '../../components/PlantCareSection';
 import RelatedPlants from '../../components/RelatedPlants';
 import PopularArticles from '../../components/PopularArticle';
 
-// Define interface for plant
 interface Plant {
-  id: number;
+  _id: string;
   name: string;
   description: string;
   image: string;
   category: string;
+  detailId: string | null;
 }
 
-// Define interface for plant details
 interface PlantDetail {
-  images?: string[];
+  _id: string;
   scientificName?: string;
   fullDescription?: string;
+  images?: string[];
+  care?: {
+    Water?: string;
+    Pruning?: string;
+    Fertilizer?: string;
+    Sunlight?: string;
+    Soil?: string;
+    Propagation?: string;
+    Temperature?: string;
+    Container?: string;
+    Popularity?: string;
+    'Common Pests'?: string;
+    'Frequent Diseases'?: string;
+    'Botanist Tips'?: string;
+  };
 }
 
 export default function PlantsDetail() {
   const params = useParams();
   const router = useRouter();
 
-  const raw = Array.isArray(params.plantId) ? params.plantId[0] : params.plantId;
-  const plantId = raw ?? '';
-  const idNum = parseInt(plantId, 10);
+  const id = Array.isArray(params.id) ? params.id[0] : params.id ?? '';
+  console.log('PlantsDetail - Params:', params, 'ID:', id);
 
   const [allPlants, setAllPlants] = useState<Plant[]>([]);
   const [detail, setDetail] = useState<PlantDetail | null>(null);
@@ -40,6 +54,13 @@ export default function PlantsDetail() {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!id) {
+        console.error('PlantsDetail - No id provided, redirecting');
+        router.replace('/identify/all-plants');
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         const plantsRes = await fetch('/api/plants');
@@ -47,36 +68,54 @@ export default function PlantsDetail() {
         const plantsData = await plantsRes.json();
         setAllPlants(plantsData.plants);
 
-        const plant = plantsData.plants.find((p: Plant) => p.id === idNum);
-        if (!plant) {
+        const currentPlant = plantsData.plants.find((p: Plant) => p._id === id);
+        if (!currentPlant) {
+          console.warn('PlantsDetail - Plant not found for id:', id);
           router.replace('/identify/all-plants');
+          setLoading(false);
           return;
         }
 
-        const detailRes = await fetch(`/api/plantDetails/${plantId}`);
-        if (detailRes.ok) {
-          const detailData = await detailRes.json();
-          setDetail(detailData);
+        if (currentPlant.detailId) {
+          const detailRes = await fetch(`/api/plantDetails/${currentPlant.detailId}`);
+          if (detailRes.ok) {
+            const detailData = await detailRes.json();
+            setDetail(detailData);
+          } else {
+            console.warn(`PlantsDetail - Failed to fetch details for detailId: ${currentPlant.detailId}`);
+            setDetail(null);
+          }
         } else {
           setDetail(null);
         }
       } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+        const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
+        console.error('PlantsDetail - Fetch error:', errorMessage);
         setError(errorMessage);
       } finally {
         setLoading(false);
       }
     };
 
-    if (plantId && !isNaN(idNum)) fetchData();
-    else router.replace('/identify/all-plants');
-  }, [plantId, idNum, router]);
+    fetchData();
+  }, [id, router]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={60} color="#14B8A6" />
+      </div>
+    );
+  }
 
-  const plant = allPlants.find((p) => p.id === idNum);
-  if (!plant) return null;
+  if (error) return <div className="text-red-500 p-4">Error: {error}</div>;
+
+  const plant = allPlants.find((p) => p._id === id);
+
+  if (!plant) {
+    console.error('PlantsDetail - Plant not found after loading.');
+    return <div className="flex justify-center items-center h-screen"><p>Plant data not available.</p></div>;
+  }
 
   const images: string[] = detail?.images?.length ? detail.images : plant.image ? [plant.image] : [];
 
@@ -91,7 +130,7 @@ export default function PlantsDetail() {
           </p>
         </div>
         <button
-          onClick={() => router.push(`/care-plan/${plantId}`)}
+          onClick={() => router.push(`/care-plan/${id}`)}
           className="mt-4 md:mt-0 bg-emerald-400 text-white px-4 py-2 rounded-full hover:bg-emerald-500"
         >
           Get Care Plan
@@ -161,7 +200,8 @@ export default function PlantsDetail() {
       <div className="mt-10">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">How to Care for the Plant</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-          <PlantCareSection plant={plant} />
+          <PlantCareSection plant={plant} careData={detail?.care} />
+
           <div className="sticky top-24 py-4 px-2 bg-blue-50 rounded-xl">
             <div className="flex items-center space-x-4">
               <img
@@ -175,7 +215,7 @@ export default function PlantsDetail() {
               </div>
             </div>
             <button
-              onClick={() => router.push(`/identify/${plantId}/diagnose`)}
+              onClick={() => router.push(`/identify/${id}/diagnose`)}
               className="mt-4 px-5 py-2 border border-emerald-500 text-emerald-500 rounded-full hover:bg-emerald-100"
             >
               Diagnose my Plant
@@ -184,7 +224,7 @@ export default function PlantsDetail() {
         </div>
       </div>
 
-      <RelatedPlants plantId={plantId} allPlants={allPlants} />
+      <RelatedPlants id={id} allPlants={allPlants} />
       <PopularArticles />
 
       {lightboxOpen && (
