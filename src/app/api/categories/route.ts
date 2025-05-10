@@ -8,25 +8,27 @@ interface Category {
   title: string;
   description: string;
   mainDescription: string;
+  expandedDescription: string;
 }
 
-interface Problem {
+interface Plant {
   _id: string;
-  image: string;
-  title: string;
-  description: string;
+  name: string;
   category: string;
+  image: string;
+  description: string;
 }
 
-interface ProblemData {
-  problems: Problem[];
+interface PlantData {
+  plants: Plant[];
   categories: Category[];
+  plantCounts: { [key: string]: number };
   selectedCategory: Category;
 }
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const categorySlug = searchParams.get("categorySlug") || "all-problem";
+  const categorySlug = searchParams.get("categorySlug") || "all-plants";
 
   const uri = process.env.MONGODB_URI;
   if (!uri) {
@@ -42,7 +44,7 @@ export async function GET(request: Request) {
     const database = client.db("plantdb");
 
     // Fetch categories
-    const categoryCollection = database.collection("problemCategories");
+    const categoryCollection = database.collection("categories");
     const categoriesFromDb = await categoryCollection.find({}).toArray();
     const categories: Category[] = categoriesFromDb.map((doc) => ({
       name: doc.name,
@@ -51,12 +53,13 @@ export async function GET(request: Request) {
       title: doc.title,
       description: doc.description,
       mainDescription: doc.mainDescription,
+      expandedDescription: doc.expandedDescription,
     }));
 
     // Find selected category
     const selectedCategory =
       categories.find((cat) => cat.slug === categorySlug) ||
-      categories.find((cat) => cat.slug === "all-problem")!;
+      categories.find((cat) => cat.slug === "all-plants")!;
     if (!selectedCategory) {
       return NextResponse.json(
         { error: "Category not found" },
@@ -64,26 +67,39 @@ export async function GET(request: Request) {
       );
     }
 
-    // Fetch problems
-    const problemCollection = database.collection("problems");
-    const problemsFromDb = await problemCollection.find({}).toArray();
-    const problems: Problem[] = problemsFromDb.map((doc) => ({
+    // Fetch plants
+    const plantCollection = database.collection("plants");
+    const plantsFromDb = await plantCollection.find({}).toArray();
+    const plants: Plant[] = plantsFromDb.map((doc) => ({
       _id: doc._id.toString(),
-      image: doc.image,
-      title: doc.title,
-      description: doc.description,
+      name: doc.name,
       category: doc.category,
+      image: doc.image,
+      description: doc.description,
     }));
 
-    // Filter problems by selected category
-    const filteredProblems =
-      selectedCategory.slug === "all-problem"
-        ? problems
-        : problems.filter((problem) => problem.category === selectedCategory.name);
+    // Filter plants by selected category
+    const displayedPlants =
+      selectedCategory.slug === "all-plants"
+        ? plants
+        : plants.filter((plant) => plant.category === selectedCategory.name);
 
-    const response: ProblemData = {
-      problems: filteredProblems,
+    // Calculate plant counts per category
+    const plantCounts: { [key: string]: number } = {};
+    categories.forEach((category) => {
+      if (category.slug === "all-plants") {
+        plantCounts[category.name] = plants.length;
+      } else {
+        plantCounts[category.name] = plants.filter(
+          (plant) => plant.category === category.name
+        ).length;
+      }
+    });
+
+    const response: PlantData = {
+      plants: displayedPlants,
       categories,
+      plantCounts,
       selectedCategory,
     };
 

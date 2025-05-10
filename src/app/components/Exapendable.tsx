@@ -11,7 +11,7 @@ interface ExpandableCareSectionProps {
   careData: CareData | null | undefined;
 }
 
-const ExpandableCareSection: React.FC<ExpandableCareSectionProps> = ({ plant, careData }) => {
+const ExpandableCareSection = ({ data }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -19,21 +19,14 @@ const ExpandableCareSection: React.FC<ExpandableCareSectionProps> = ({ plant, ca
     setIsOpen((prev) => !prev);
   };
 
-  const section = {
-    title: 'Water',
-    icon: 'https://strapi.myplantin.com/plant_care_water_74ea6d9cdc.webp',
-  };
-
-  const content = careData?.Water || 'Water the Chinese banyan as soon as the soil becomes dry on one centimeter, water so as to moisten all of it. During a growth period (spring, summer), watering should be regular - once or twice a week - but measured in order not to asphyxiate the roots of plants. In the fall, space the waterings gently, until winter';
-
   return (
     <div className="border border-gray-200 rounded-xl">
       <div className="flex items-center justify-between px-6 py-4">
         <div className="flex items-center">
           <div className="p-2 bg-emerald-100 rounded-full">
             <img
-              src={section.icon}
-              alt={`${section.title} icon`}
+              src={data.icon}
+              alt={`${data.title} icon`}
               className="w-6 h-6"
             />
           </div>
@@ -60,7 +53,7 @@ const ExpandableCareSection: React.FC<ExpandableCareSectionProps> = ({ plant, ca
       </div>
       {isOpen && (
         <div className="px-6 pb-6">
-          <p>{content}</p>
+          <p>{data.description}</p>
           <div className="flex mt-6">
             <button
               disabled

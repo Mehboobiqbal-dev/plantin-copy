@@ -5,6 +5,11 @@ import PlantIdentifierClient from "../../components/PlantIdentifierClient";
 interface Category {
   name: string;
   slug: string;
+  headerImage: string;
+  title: string;
+  description: string;
+  mainDescription: string;
+  expandedDescription: string;
 }
 
 interface Plant {
@@ -17,41 +22,14 @@ interface Plant {
 
 interface PlantData {
   plants: Plant[];
+  categories: Category[];
 }
 
 interface PlantIdentifierProps {
   params: Promise<{ categorySlug: string[] }>;
 }
 
-const categories: Category[] = [
-  { name: "All plants", slug: "all-plants" },
-  { name: "Houseplants", slug: "houseplants" },
-  { name: "Cactuses", slug: "cactus" },
-  { name: "Succulents", slug: "succulents" },
-  { name: "Flowers", slug: "flowers" },
-  { name: "Trees", slug: "trees" },
-  { name: "Veggies & Fruit", slug: "veggies-fruit" },
-  { name: "Grasses", slug: "grasses" },
-  { name: "Shrubs", slug: "shrub" },
-  { name: "Ferns", slug: "ferns" },
-  { name: "Herbs", slug: "herbs" },
-];
-
-const categoryDisplayNames: { [key: string]: string } = {
-  "All plants": "Plant",
-  Houseplants: "Houseplant",
-  Cactuses: "Cactus",
-  Succulents: "Succulent",
-  Flowers: "Flower",
-  Trees: "Tree",
-  "Veggies & Fruit": "Veggie & Fruit",
-  Grasses: "Grass",
-  Shrubs: "Shrub",
-  Ferns: "Fern",
-  Herbs: "Herb",
-};
-
-const getPlants = async (): Promise<PlantData> => {
+const getPlantData = async (): Promise<PlantData> => {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
     throw new Error("MONGODB_URI is not defined in environment variables");
@@ -60,9 +38,10 @@ const getPlants = async (): Promise<PlantData> => {
   try {
     await client.connect();
     const database = client.db("plantdb");
-    const collection = database.collection("plants");
-    const plantsFromDb = await collection.find({}).toArray();
-    // Map MongoDB documents to Plant interface
+
+    // Fetch plants
+    const plantCollection = database.collection("plants");
+    const plantsFromDb = await plantCollection.find({}).toArray();
     const plants: Plant[] = plantsFromDb.map((doc) => ({
       _id: doc._id.toString(),
       name: doc.name,
@@ -70,9 +49,23 @@ const getPlants = async (): Promise<PlantData> => {
       image: doc.image,
       description: doc.description,
     }));
-    return { plants };
+
+    // Fetch categories
+    const categoryCollection = database.collection("categories");
+    const categoriesFromDb = await categoryCollection.find({}).toArray();
+    const categories: Category[] = categoriesFromDb.map((doc) => ({
+      name: doc.name,
+      slug: doc.slug,
+      headerImage: doc.headerImage,
+      title: doc.title,
+      description: doc.description,
+      mainDescription: doc.mainDescription,
+      expandedDescription: doc.expandedDescription,
+    }));
+
+    return { plants, categories };
   } catch (error) {
-    console.error("Error fetching plants from MongoDB:", error);
+    console.error("Error fetching data from MongoDB:", error);
     throw error;
   } finally {
     await client.close();
@@ -80,22 +73,22 @@ const getPlants = async (): Promise<PlantData> => {
 };
 
 const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
-  const plantData = await getPlants();
-  const plants = plantData.plants;
+  const plantData = await getPlantData();
+  const { plants, categories } = plantData;
   const resolvedParams = await params;
   const slug = resolvedParams.categorySlug.length > 0 ? resolvedParams.categorySlug[0] : undefined;
-  const selectedCategory: string = slug
-    ? categories.find((cat) => cat.slug === slug)?.name || "All plants"
-    : "All plants";
+  const selectedCategory: Category = slug
+    ? categories.find((cat) => cat.slug === slug) || categories.find((cat) => cat.slug === "all-plants")!
+    : categories.find((cat) => cat.slug === "all-plants")!;
 
   const displayedPlants: Plant[] =
-    selectedCategory === "All plants"
+    selectedCategory.slug === "all-plants"
       ? plants
-      : plants.filter((plant) => plant.category === selectedCategory);
+      : plants.filter((plant) => plant.category === selectedCategory.name);
 
   const plantCounts: { [key: string]: number } = {};
   categories.forEach((category) => {
-    if (category.name === "All plants") {
+    if (category.slug === "all-plants") {
       plantCounts[category.name] = plants.length;
     } else {
       plantCounts[category.name] = plants.filter((plant) => plant.category === category.name).length;
@@ -116,15 +109,14 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
               <span className="text-gray-700">PlantIn</span>
               <span className="mx-1 text-gray-700">  </span>
               <span className="text-gray-600">
-                {categoryDisplayNames[selectedCategory]} Identifier
+                {selectedCategory.name} Identifier
               </span>
             </div>
             <p className="mt-3 md:text-3xl text-2xl font-extrabold text-left w-full py-4">
-              {categoryDisplayNames[selectedCategory]} Identifier by Picture
+              {selectedCategory.title}
             </p>
             <p className="text-sm xl:max-w-[760px] lg:max-w-[640px] md:max-w-[520px]">
-              Identify plants, use customizable lists, and learn how to care for
-              each particular species.
+              {selectedCategory.description}
             </p>
             <div className="mt-4 flex">
               <input
@@ -147,8 +139,8 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
         </div>
         <div className="w-[65%] h-full">
           <img
-            src="https://strapi.myplantin.com/Plant_illustration01_78e3457b6f.webp"
-            alt="Plant Illustration"
+            src={selectedCategory.headerImage}
+            alt={`${selectedCategory.name} Illustration`}
             className="w-full h-full object-contain"
           />
         </div>
@@ -157,10 +149,12 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row">
           <PlantIdentifierClient
-            selectedCategory={selectedCategory}
-            displayedPlants={displayedPlants}
-            categories={categories}
-            plantCounts={plantCounts}
+            initialSelectedCategory={selectedCategory}
+            initialDisplayedPlants={displayedPlants}
+            initialCategories={categories}
+            initialPlantCounts={plantCounts}
+            initialMainDescription={selectedCategory.mainDescription}
+            initialExpandedDescription={selectedCategory.expandedDescription}
           />
         </div>
       </div>

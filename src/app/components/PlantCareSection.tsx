@@ -98,15 +98,11 @@ const PlantCareSection: React.FC<PlantCareSectionProps> = ({ plant, careData }) 
       </button>
     </div>
   );
-const caredata = [ {
-  "title": "Water",
-  "image": "https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fplant_care_water_74ea6d9cdc.webp&w=48&q=75",
-  "description": "Water the Chinese banyan as soon as a soil becomes dry on one centimeter, water so as to moisten all of it. During a growth period (spring, summer), watering should be regular - once or twice a week - but measured in order not to asphyxiate a roots of plants. In a fall, space a waterings gently, until winter."
-}
-]
+
+
   return (
     <div className="space-y-4">
-      <ExpandableCareSection plant={plant} careData={careData} />
+      
       {combinedSections.map((section) => {
         const isOpen = openStates[section.title] || false;
         let currentContent;

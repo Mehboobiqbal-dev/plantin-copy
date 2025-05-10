@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ClipLoader } from 'react-spinners';
 import CollapsibleBox from '../components/ColapsibleBox';
@@ -8,6 +8,11 @@ import CollapsibleBox from '../components/ColapsibleBox';
 interface Category {
   name: string;
   slug: string;
+  headerImage: string;
+  title: string;
+  description: string;
+  mainDescription: string;
+  expandedDescription: string;
 }
 
 interface Plant {
@@ -32,31 +37,63 @@ interface LifeCycle {
 }
 
 interface PlantIdentifierClientProps {
-  selectedCategory: string;
-  displayedPlants: Plant[];
-  categories: Category[];
-  plantCounts: { [key: string]: number };
+  initialSelectedCategory: Category;
+  initialDisplayedPlants: Plant[];
+  initialCategories: Category[];
+  initialPlantCounts: { [key: string]: number };
+  initialMainDescription: string;
+  initialExpandedDescription: string;
 }
 
 const PlantIdentifierClient: React.FC<PlantIdentifierClientProps> = ({
-  selectedCategory,
-  displayedPlants,
-  categories,
-  plantCounts,
+  initialSelectedCategory,
+  initialDisplayedPlants,
+  initialCategories,
+  initialPlantCounts,
+  initialMainDescription,
+  initialExpandedDescription,
 }) => {
   const router = useRouter();
-  const [traits, setTraits] = React.useState<Traits>({
+  const [selectedCategory, setSelectedCategory] = useState<Category>(initialSelectedCategory);
+  const [displayedPlants, setDisplayedPlants] = useState<Plant[]>(initialDisplayedPlants);
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
+  const [plantCounts, setPlantCounts] = useState<{ [key: string]: number }>(initialPlantCounts);
+  const [mainDescription, setMainDescription] = useState<string>(initialMainDescription);
+  const [expandedDescription, setExpandedDescription] = useState<string>(initialExpandedDescription);
+  const [traits, setTraits] = useState<Traits>({
     trailing: false,
     hanging: false,
     evergreen: false,
     easyCare: false,
     airPurifying: false,
   });
-  const [expanded, setExpanded] = React.useState<boolean>(false);
-  const [lifeCycle, setLifeCycle] = React.useState<LifeCycle>({
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const [lifeCycle, setLifeCycle] = useState<LifeCycle>({
     perennial: false,
     annual: false,
   });
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const fetchCategoryData = async (categorySlug: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/categories?categorySlug=${categorySlug}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch category data');
+      }
+      const data = await response.json();
+      setSelectedCategory(data.selectedCategory);
+      setDisplayedPlants(data.plants);
+      setCategories(data.categories);
+      setPlantCounts(data.plantCounts);
+      setMainDescription(data.selectedCategory.mainDescription);
+      setExpandedDescription(data.selectedCategory.expandedDescription);
+    } catch (error) {
+      console.error('Error fetching category data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleTraitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTraits({
@@ -70,6 +107,11 @@ const PlantIdentifierClient: React.FC<PlantIdentifierClientProps> = ({
       ...lifeCycle,
       [e.target.name]: e.target.checked,
     });
+  };
+
+  const handleCategoryChange = (slug: string) => {
+    router.push(`/identify/${slug}`);
+    fetchCategoryData(slug);
   };
 
   return (
@@ -211,7 +253,11 @@ const PlantIdentifierClient: React.FC<PlantIdentifierClientProps> = ({
         </div>
       </aside>
       <main className="w-full md:w-2/3 lg:w-3/4 md:pl-8">
-        {displayedPlants.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <ClipLoader color="#04BF94" size={40} />
+          </div>
+        ) : displayedPlants.length === 0 ? (
           <div className="flex justify-center items-center h-64">
             <ClipLoader color="#04BF94" size={40} />
           </div>
@@ -223,11 +269,11 @@ const PlantIdentifierClient: React.FC<PlantIdentifierClientProps> = ({
                   {categories.map((cat) => (
                     <li
                       key={cat.name}
-                      onClick={() => router.push(`/identify/${cat.slug}`)}
+                      onClick={() => handleCategoryChange(cat.slug)}
                       className={`
                         whitespace-nowrap cursor-pointer px-3 py-1
                         ${
-                          cat.name === selectedCategory
+                          cat.name === selectedCategory.name
                             ? 'text-green-600 font-medium'
                             : 'text-gray-600 hover:text-blue-600'
                         }
@@ -244,11 +290,7 @@ const PlantIdentifierClient: React.FC<PlantIdentifierClientProps> = ({
             </nav>
             <div className="relative md:p-5 p-4 border rounded-xl border-gray-200">
               <p className="text-lg text-gray-700">
-                Imagine walking down the street and noticing fantastic flowers
-                blooming in someone’s garden. In fact, these queens – you think
-                – would fit perfectly in your backyard. But what are they
-                called? Your plant knowledge from 8th-grade biology isn’t
-                enough...
+                {mainDescription}
               </p>
               <button
                 onClick={() => setExpanded(!expanded)}
@@ -260,21 +302,7 @@ const PlantIdentifierClient: React.FC<PlantIdentifierClientProps> = ({
                 <div className="mt-4 border rounded-xl border-gray-200 p-4">
                   <div className="border-gray-200 pt-4">
                     <p className="text-lg text-gray-700">
-                      Well, that’s the kind of situation a plant identifier was
-                      created for. The plant identifier app is an online
-                      alternative to manual plant identification. Let’s learn a
-                      bit more about how to identify a plant both manually and
-                      with some help from digital technologies.
-                    </p>
-                  </div>
-                  <div className="border-gray-200">
-                    <p className="text-lg text-gray-700">
-                      What Kind of Plant Is This? There are almost 400,000
-                      identified plant species in the world. If you want to know
-                      what kind of plant is this shrub you stumbled upon in the
-                      forest, your first option is to ask a biologist. If you
-                      don’t have one at hand, you’ll have to master plant
-                      identification on your own.
+                      {expandedDescription}
                     </p>
                   </div>
                 </div>

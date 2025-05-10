@@ -7,11 +7,13 @@ import { MdKeyboardArrowUp } from 'react-icons/md';
 import { IoIosArrowDown } from 'react-icons/io';
 import { ClipLoader } from 'react-spinners';
 
-type CategorySlug = 'all-problem' | 'diseases' | 'pests' | 'weeds' | 'general';
-
 interface Category {
   name: string;
-  slug: CategorySlug;
+  slug: string;
+  headerImage: string;
+  title: string;
+  description: string;
+  mainDescription: string;
 }
 
 interface Problem {
@@ -22,48 +24,31 @@ interface Problem {
   category: string;
 }
 
-const categories: Category[] = [
-  { name: 'All Problems', slug: 'all-problem' },
-  { name: 'Diseases', slug: 'diseases' },
-  { name: 'Pests', slug: 'pests' },
-  { name: 'Weeds', slug: 'weeds' },
-];
-
-const displayTitles: Record<CategorySlug, string> = {
-  'all-problem': 'Problems',
-  diseases: 'Disease ID',
-  pests: 'Pest ID',
-  weeds: 'Weeds ID',
-  general: 'General ID',
-};
-
 export default function PlantProblems() {
   const params = useParams();
   const slugParam = params.categorySlug;
   const rawSlug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
-  const selectedSlug: CategorySlug = categories.some(c => c.slug === rawSlug)
-    ? (rawSlug as CategorySlug)
-    : 'all-problem';
+  const selectedSlug = rawSlug || 'all-problem';
 
-  const currentCategory = categories.find(c => c.slug === selectedSlug)!;
+  const [categories, setCategories] = useState<Category[]>([]);
   const [filteredData, setFilteredData] = useState<Problem[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const response = await fetch('/api/problems');
+        const response = await fetch(`/api/problems?categorySlug=${selectedSlug}`);
         if (!response.ok) throw new Error('Failed to fetch problems');
         const data = await response.json();
-        const problems = data.Data;
-        const filtered = selectedSlug === 'all-problem'
-          ? problems
-          : problems.filter((item: Problem) => item.category === selectedSlug);
-        setFilteredData(filtered);
+        setFilteredData(data.problems);
+        setCategories(data.categories);
+        setSelectedCategory(data.selectedCategory);
       } catch (error) {
         console.error('Error fetching problems:', error);
         setFilteredData([]);
+        setSelectedCategory(null);
       } finally {
         setLoading(false);
       }
@@ -72,7 +57,7 @@ export default function PlantProblems() {
     fetchProblems();
   }, [selectedSlug]);
 
-  if (loading) {
+  if (loading || !selectedCategory) {
     return (
       <div className="flex justify-center items-center h-screen">
         <ClipLoader color="#04BF94" size={40} />
@@ -95,11 +80,10 @@ export default function PlantProblems() {
             </div>
           </div>
           <p className="text-3xl text-left md:text-4xl font-bold text-black">
-            Plant {displayTitles[selectedSlug]} Diagnosis
+            {selectedCategory.title}
           </p>
           <p className="text-sm text-left">
-            We cannot allow your plants to suffer from disorders and various diseases.
-            Let's begin treatment with our plant {displayTitles[selectedSlug].toLowerCase()} identifier and easy in-app ID tool.
+            {selectedCategory.description}
           </p>
           <button
             type="button"
@@ -111,8 +95,8 @@ export default function PlantProblems() {
         </div>
         <div className="w-full md:w-1/2 h-64 md:h-auto">
           <img
-            src="https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2FDiseases_illustration_a772d9dc34.webp&w=3840&q=75"
-            alt="Plant Problems Illustration"
+            src={selectedCategory.headerImage}
+            alt={`${selectedCategory.name} Illustration`}
             className="w-full h-full object-cover"
           />
         </div>
@@ -142,11 +126,7 @@ export default function PlantProblems() {
           }`}
         >
           <p className="text-gray-700">
-            If you have houseplants or grow them in the garden, you have probably encountered problems
-            such as illnesses and even the death of your plants. Plant problems in the “
-            {currentCategory.name}” category occur due to various causes,
-            such as pathogens and adverse environmental conditions. Diagnosing different plant problems
-            is key to the plant’s successful growth.
+            {selectedCategory.mainDescription}
           </p>
           <button
             onClick={() => setExpanded(!expanded)}
@@ -223,7 +203,7 @@ export default function PlantProblems() {
         </div>
       </div>
       <div className="mt-4 text-sm text-gray-500 px-4">
-        {filteredData.length} items match “{currentCategory.name}”
+        {filteredData.length} items match “{selectedCategory.name}”
       </div>
       <div className="mx-auto w-full px-4 py-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
