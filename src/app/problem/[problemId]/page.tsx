@@ -171,9 +171,9 @@ const Problem = () => {
         <div className="flex-grow flex items-start justify-start text-left">
           <div className="text-sm">
             <span className="text-gray-700">PlantIn</span>
-            <span className="mx-1 text-gray-700"> > </span>
+            <span className="mx-1 text-gray-700"> &gt; </span>
             <span className="text-gray-600">Plant Problem</span>
-            <span className="mx-1 text-gray-700"> > </span>
+            <span className="mx-1 text-gray-700"> &gt; </span>
             <span className="text-gray-500">{plant.title}</span>
           </div>
         </div>

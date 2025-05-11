@@ -8,6 +8,8 @@ interface Category {
   title: string;
   description: string;
   mainDescription: string;
+  commonProblemsDescription: string;
+  diagnosisSteps: string;
 }
 
 interface Problem {
@@ -51,6 +53,8 @@ export async function GET(request: Request) {
       title: doc.title,
       description: doc.description,
       mainDescription: doc.mainDescription,
+      commonProblemsDescription: doc.commonProblemsDescription || '',
+      diagnosisSteps: doc.diagnosisSteps || '',
     }));
 
     // Find selected category
@@ -79,7 +83,7 @@ export async function GET(request: Request) {
     const filteredProblems =
       selectedCategory.slug === "all-problem"
         ? problems
-        : problems.filter((problem) => problem.category === selectedCategory.name);
+        : problems.filter((problem) => problem.category.toLowerCase() === selectedCategory.name.toLowerCase());
 
     const response: ProblemData = {
       problems: filteredProblems,

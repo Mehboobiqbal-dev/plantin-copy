@@ -2,19 +2,21 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import clientPromise from '../lib/mongodb-client';
 import connectToDatabase from '@/app/lib/mongodb';
 import UserModel from '@/app/models/user';
 import bcrypt from 'bcryptjs';
 
-// Define the User interface to match the Mongoose schema
 interface User {
-  _id: string; // or import { Types } from 'mongoose' and use Types.ObjectId
+  id: string;
   name: string;
   email: string;
   password?: string;
 }
 
 export const authOptions: NextAuthOptions = {
+  adapter: MongoDBAdapter(clientPromise),
   session: { strategy: 'jwt' },
   providers: [
     GithubProvider({
@@ -32,11 +34,11 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) {
+        if (!credentials?.email || !credentials?.password) {
           throw new Error('Email and password are required');
         }
         await connectToDatabase();
-        const user = await UserModel.findOne({ email: credentials.email }) as User | null;
+        const user = await UserModel.findOne({ email: credentials.email });
         if (!user || !user.password) {
           throw new Error('Invalid email or password');
         }
@@ -44,24 +46,10 @@ export const authOptions: NextAuthOptions = {
         if (!isValid) {
           throw new Error('Invalid email or password');
         }
-        return { id: user._id, name: user.name, email: user.email };
+        return { id: user._id.toString(), name: user.name, email: user.email };
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user, account }) {
-      if (user) {
-        token.id = user.id;
-        token.provider = account?.provider!;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      session.user.id = token.id as string;
-      session.user.provider = token.provider as string;
-      return session;
-    },
-  },
   pages: { signIn: '/auth' },
   secret: process.env.NEXTAUTH_SECRET,
 };

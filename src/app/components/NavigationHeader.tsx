@@ -243,24 +243,23 @@ export function NavigationHeader() {
               {status === 'authenticated' ? (
                 <>
                   {/* Premium Button with Notification */}
-                  {/* Premium Button with Message Icon */}
+                 
                   <div className="relative flex items-center">
-                      <Link
-                        href="/messages"
-                        className="mr-2"
-                      >
-                        <img
-                          src="https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fenvelop_free_82a5a66816.webp&w=96&q=75"
-                          alt="Message Icon"
-                          className="h-5 w-5 object-contain"
-                        />
-                      </Link>
-                      <Link
-                        href="/premium"
-                        className="px-4 py-2 font-semibold rounded-2xl bg-purple-600 text-white flex items-center"
-                      >
-                        Premium
-                      </Link>
+                     
+                       
+                    
+                  <Link
+  href="/premium"
+  className="px-4 py-2 font-semibold rounded-2xl bg-purple-600 text-white flex items-center gap-2"
+>
+  <img
+    src="https://myplantin.com/_next/image?url=https%3A%2F%2Fstrapi.myplantin.com%2Fenvelop_free_82a5a66816.webp&w=96&q=75"
+    alt="Message Icon"
+    className="h-5 w-5 object-contain"
+  />
+  Premium
+</Link>
+
                       </div>
                   {/* Leaves Symbol */}
                   <Link href="/rewards">

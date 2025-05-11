@@ -6,7 +6,6 @@ interface MongooseCache {
   promise: Promise<typeof mongoose> | null;
 }
 
-// use an `any` cast so TS won’t complain about `global.mongoose`
 const globalAny: any = global;
 
 if (!globalAny.mongoose) {

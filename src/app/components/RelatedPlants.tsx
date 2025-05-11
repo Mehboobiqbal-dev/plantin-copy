@@ -3,7 +3,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-// Define interface for plant
 interface Plant {
   _id: string;
   name: string;
@@ -32,7 +31,7 @@ const RelatedPlants: React.FC<RelatedPlantsProps> = ({ id, allPlants }) => {
           <div
             key={plant._id}
             className="bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow"
-            onClick={() => router.push(`/plants/${plant._id}`)}
+            onClick={() => router.push(`/identify/${plant._id}`)}
           >
             <img
               src={plant.image}
@@ -45,6 +44,19 @@ const RelatedPlants: React.FC<RelatedPlantsProps> = ({ id, allPlants }) => {
             </div>
           </div>
         ))}
+        <div className="flex-none w-64 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col items-center justify-between">
+          <img
+            src="https://strapi.myplantin.com/twig_e3ab677a36.webp"
+            alt="Branch icon"
+            className="w-12 h-12 mb-4"
+          />
+          <button
+            onClick={() => router.push('/identify/all-plants')}
+            className="mt-auto px-6 py-2 border border-emerald-500 text-emerald-500 rounded-full hover:bg-emerald-50 font-semibold"
+          >
+            Discover all
+          </button>
+        </div>
       </div>
     </section>
   );

@@ -17,25 +17,26 @@ interface Plant {
   detailId: string | null;
 }
 
+interface CareRequirement {
+  icon: string;
+  label: string;
+  value: string;
+}
+
+interface CareSection {
+  title: string;
+  icon: string;
+  description: string;
+}
+
 interface PlantDetail {
   _id: string;
   scientificName?: string;
   fullDescription?: string;
   images?: string[];
-  care?: {
-    Water?: string;
-    Pruning?: string;
-    Fertilizer?: string;
-    Sunlight?: string;
-    Soil?: string;
-    Propagation?: string;
-    Temperature?: string;
-    Container?: string;
-    Popularity?: string;
-    'Common Pests'?: string;
-    'Frequent Diseases'?: string;
-    'Botanist Tips'?: string;
-  };
+  care?: Record<string, string>;
+  careRequirements?: CareRequirement[];
+  careSections?: CareSection[];
 }
 
 export default function PlantsDetail() {
@@ -171,17 +172,10 @@ export default function PlantsDetail() {
           <div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Care Requirements</h2>
             <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
-              {[
-                { icon: 'humidity_3ff8353df1.webp', label: 'Humidity', value: 'Normal' },
-                { icon: 'lightening_part_sun_df08bd4748.webp', label: 'Lighting', value: 'Part Sun' },
-                { icon: 'temperature_7496e304fa.webp', label: 'Temperature', value: '16°C - 27°C' },
-                { icon: 'hardiness_zone_471884b25e.webp', label: 'Hardiness Zone', value: '10a - 11b' },
-                { icon: 'difficulty_66231487c6.webp', label: 'Difficulty', value: 'Medium' },
-                { icon: 'hibernation_47ea9a4a34.webp', label: 'Hibernation', value: 'Cold Period' },
-              ].map(({ icon, label, value }) => (
+              {(detail?.careRequirements || []).map(({ icon, label, value }) => (
                 <div key={label} className="flex items-center">
                   <img
-                    src={`https://strapi.myplantin.com/climate_${icon}`}
+                    src={icon}
                     alt={`${label} icon`}
                     className="w-12 h-12"
                   />
@@ -200,7 +194,7 @@ export default function PlantsDetail() {
       <div className="mt-10">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">How to Care for the Plant</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-          <PlantCareSection plant={plant} careData={detail?.care} />
+          <PlantCareSection plant={plant} careSections={detail?.careSections} />
 
           <div className="sticky top-24 py-4 px-2 bg-blue-50 rounded-xl">
             <div className="flex items-center space-x-4">

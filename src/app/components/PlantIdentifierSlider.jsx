@@ -33,9 +33,10 @@ const PlantIdentifierSlider = () => {
       and confidence in just a few taps – featuring innovative ML
       technologies, an extensive database, and ID guidance.
     </p>
-    <button className="bg-teal-700 text-white py-4 px-17 rounded-full mb-6">
-      Identify a Plant
-    </button>
+    <button className="bg-teal-700 text-white py-4 px-6 w-60 rounded-full mb-6">
+  Identify a Plant
+</button>
+
     <div className="flex items-center mb-6">
       <img
         src="https://myplantin.com/icons/qr-code.svg"
@@ -91,7 +92,7 @@ const PlantIdentifierSlider = () => {
                 identify the disease type, and treat any sick greenery with the
                 help of our botanist experts and in-depth guides
               </p>
-              <button className="bg-teal-700 text-white py-4 px-35 rounded-full mb-6">
+              <button className="bg-teal-700 text-white py-4 px-35 w-60 rounded-full mb-6">
                 Diagnose Plant Problem
               </button>
               <div className="flex justify-center mb-6">
@@ -144,7 +145,7 @@ const PlantIdentifierSlider = () => {
                 notes, and track your progress
               </p>
               
-              <button className=" bg-teal-700 text-white py-4 px-35 rounded-full mb-6">
+              <button className=" bg-teal-700 text-white py-4 px-35 w-60 rounded-full mb-6">
                 Start Your Plant Care
               </button>
               <div className="flex justify-left mb-6">

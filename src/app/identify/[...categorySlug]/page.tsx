@@ -137,13 +137,14 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
             </div>
           </div>
         </div>
-        <div className="w-[65%] h-full">
-          <img
-            src={selectedCategory.headerImage}
-            alt={`${selectedCategory.name} Illustration`}
-            className="w-full h-full object-contain"
-          />
-        </div>
+        <div className="w-[45%] h-full">
+  <img
+    src={selectedCategory.headerImage}
+    alt={`${selectedCategory.name} Illustration`}
+    className="w-full h-[70%] object-contain"
+  />
+</div>
+
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-8">

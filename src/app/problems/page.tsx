@@ -14,6 +14,8 @@ interface Category {
   title: string;
   description: string;
   mainDescription: string;
+  commonProblemsDescription: string;
+  diagnosisSteps: string;
 }
 
 interface Problem {
@@ -64,6 +66,14 @@ export default function PlantProblems() {
       </div>
     );
   }
+
+  const isAllProblems = selectedCategory.slug === 'all-problem';
+  const getDiagnosisTitle = () => {
+    if (selectedCategory.name === 'Pests') return 'How to Identify Pests Problems';
+    if (selectedCategory.name === 'Diseases') return 'How to Identify Plant Diseases';
+    if (selectedCategory.name === 'Weeds') return 'How to Identify Weeds Problems';
+    return `How to Diagnose ${selectedCategory.name} Problems`;
+  };
 
   return (
     <div className="bg-white min-h-screen">
@@ -136,68 +146,34 @@ export default function PlantProblems() {
           </button>
           {expanded && (
             <div className="mt-4 p-4">
-              <div className="border-gray-300 pt-4">
-                <p className="text-left text-2xl font-bold p-2">
-                  What Are the Common Problems in Plants?
-                </p>
-                <div className="text-lg text-gray-700 text-left">
-                  Protecting plants from diseases requires a thorough approach. First, you should define the
-                  problem:
-                  <ul>
-                    <li>
-                      <span className="font-bold text-black text-left">• Plant diseases</span> This is one of
-                      the main plant problems, which includes diseases, damages, and disorders which occur
-                      during the plant’s growth.
-                    </li>
-                    <li>
-                      <span className="font-bold text-black text-left">• Environmental problems.</span> Experienced
-                      gardeners know to consider the habitat in which plants grow for proper and timely protection.
-                      Each plant species has its own set of optimal values of factors under which the plants will be
-                      in a normal state, and their immune responses to pathogens and pests will be optimal.
-                    </li>
-                    <li>
-                      <span className="font-bold text-black text-left">• Plant pests and invasive plants.</span> Plant
-                      pests include insects, bugs, and various weeds that may impact the plants.
-                    </li>
-                  </ul>
+              {(isAllProblems || selectedCategory.commonProblemsDescription) && (
+                <div className="border-gray-300 pt-4">
+                  <p className="text-left text-2xl font-bold p-2">
+                    {isAllProblems ? 'What Are the Common Problems in Plants?' : `${selectedCategory.name} Overview`}
+                  </p>
+                  <div
+                    className="text-lg text-gray-700 text-left"
+                    dangerouslySetInnerHTML={{
+                      __html: selectedCategory.commonProblemsDescription || 
+                        'Common problems description not available for this category.'
+                    }}
+                  />
                 </div>
-              </div>
-              <div className="border-gray-300">
-                <p className="text-left text-2xl font-bold p-2">
-                  How to Diagnose Plant Problems
-                </p>
-                <div className="text-lg text-gray-700 text-left">
-                  Here is a short list of the steps you should take for easy detection of the plant problems:
-                  <ul>
-                    <li>
-                      <span className="font-bold text-black text-left">• Pay attention to your plants.</span> Always
-                      notice when something changes with your plant to detect the problems timely. Frequent observations
-                      will help you solve the problem instantly, so check the signs and symptoms first.
-                    </li>
-                    <li>
-                      <span className="font-bold text-black text-left">• Learn the name of the plant.</span> Some gardeners
-                      have so many plants that they even forget which one is in front of them. You need to know the plant’s
-                      name to figure out its disease.
-                    </li>
-                    <li>
-                      <span className="font-bold text-black text-left">• Look at the leaves.</span> The holes in the leaves
-                      often point at the insect pests.
-                    </li>
-                    <li>
-                      <span className="font-bold text-black text-left">• Look for the culprit.</span> Look for the insects or their signs.
-                    </li>
-                    <li>
-                      <span className="font-bold text-black text-left">• Use PlantIn.</span> With the MyPlantIn web version
-                      or the PlantIn app for Android and iOS, you can use the identifier of the plant disease that you
-                      can rely on in your further search. Moreover, you can get expert help from professionals via the platform.
-                    </li>
-                  </ul>
-                  Don’t hesitate to identify your plant issues to solve them as quickly as possible!
-                  Are you thinking about how to diagnose my plant? No worries!
-                  You can use our list of possible diseases, read helpful articles, or promptly diagnose the plant and
-                  get a treatment guide from our best botanist.
+              )}
+              {selectedCategory.diagnosisSteps && (
+                <div className="border-gray-300">
+                  <p className="text-left text-2xl font-bold p-2">
+                    {getDiagnosisTitle()}
+                  </p>
+                  <div
+                    className="text-lg text-gray-700 text-left"
+                    dangerouslySetInnerHTML={{
+                      __html: selectedCategory.diagnosisSteps || 
+                        'Diagnosis steps not available for this category.'
+                    }}
+                  />
                 </div>
-              </div>
+              )}
             </div>
           )}
         </div>
@@ -205,25 +181,31 @@ export default function PlantProblems() {
       <div className="mt-4 text-sm text-gray-500 px-4">
         {filteredData.length} items match “{selectedCategory.name}”
       </div>
-      <div className="mx-auto w-full px-4 py-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {filteredData.map(item => (
-            <Link href={`/problem/${item._id}`} key={item._id}>
-              <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-40 object-cover"
-                />
-                <div className="p-4">
-                  <h2 className="font-bold text-lg mb-1">{item.title}</h2>
-                  <p className="text-gray-700 text-sm">{item.description}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
+      {filteredData.length === 0 ? (
+        <div className="text-center text-gray-600 mt-6">
+          No problems found for the category “{selectedCategory.name}”.
         </div>
-      </div>
+      ) : (
+        <div className="mx-auto w-full px-4 py-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {filteredData.map(item => (
+              <Link href={`/problem/${item._id}`} key={item._id}>
+                <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="p-4">
+                    <h2 className="font-bold text-lg mb-1">{item.title}</h2>
+                    <p className="text-gray-700 text-sm">{item.description}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
       <style jsx global>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
