@@ -29,13 +29,13 @@ const AuthModal = () => {
       setIsLoading(true);
       const result = await signIn(provider, { redirect: false });
       if (result?.error) {
-        setError(`Failed to sign in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}. Please try again.`);
+        setError(`Failed to ${activeTab} with ${provider.charAt(0).toUpperCase() + provider.slice(1)}. Please try again.`);
       } else {
         router.push('/');
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
-      console.error(`Social sign-in error (${provider}):`, err);
+      console.error(`Social ${activeTab} error (${provider}):`, err);
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +82,7 @@ const AuthModal = () => {
           <div className="text-red-500 text-center mb-4 font-medium bg-red-100 p-3 rounded-lg">{error}</div>
         )}
 
-        <SocialButtons isLoading={isLoading} handleSocialSignIn={handleSocialSignIn} />
+        <SocialButtons isLoading={isLoading} handleSocialSignIn={handleSocialSignIn} activeTab={activeTab} />
 
         <div className="flex items-center mb-8">
           <hr className="flex-grow border-t border-gray-300" />

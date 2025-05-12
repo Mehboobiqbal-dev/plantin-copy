@@ -4,9 +4,10 @@ import { FaApple, FaGoogle, FaFacebookF } from 'react-icons/fa';
 interface SocialButtonsProps {
   isLoading: boolean;
   handleSocialSignIn: (provider: 'apple' | 'google' | 'facebook') => void;
+  activeTab: 'signin' | 'signup';
 }
 
-const SocialButtons: React.FC<SocialButtonsProps> = ({ isLoading, handleSocialSignIn }) => {
+const SocialButtons: React.FC<SocialButtonsProps> = ({ isLoading, handleSocialSignIn, activeTab }) => {
   return (
     <div className="flex space-x-4 mb-8">
       <button

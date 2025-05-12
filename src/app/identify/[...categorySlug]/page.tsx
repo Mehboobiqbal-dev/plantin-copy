@@ -1,6 +1,6 @@
-import { NextPage } from "next";
-import { MongoClient } from "mongodb";
-import PlantIdentifierClient from "../../components/PlantIdentifierClient";
+import { NextPage } from 'next';
+import { MongoClient } from 'mongodb';
+import PlantIdentifierClient from '../../components/PlantIdentifierClient';
 
 interface Category {
   name: string;
@@ -32,15 +32,15 @@ interface PlantIdentifierProps {
 const getPlantData = async (): Promise<PlantData> => {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
-    throw new Error("MONGODB_URI is not defined in environment variables");
+    throw new Error('MONGODB_URI is not defined in environment variables');
   }
   const client = new MongoClient(uri);
   try {
     await client.connect();
-    const database = client.db("plantdb");
+    const database = client.db('plantdb');
 
     // Fetch plants
-    const plantCollection = database.collection("plants");
+    const plantCollection = database.collection('plants');
     const plantsFromDb = await plantCollection.find({}).toArray();
     const plants: Plant[] = plantsFromDb.map((doc) => ({
       _id: doc._id.toString(),
@@ -51,7 +51,7 @@ const getPlantData = async (): Promise<PlantData> => {
     }));
 
     // Fetch categories
-    const categoryCollection = database.collection("categories");
+    const categoryCollection = database.collection('categories');
     const categoriesFromDb = await categoryCollection.find({}).toArray();
     const categories: Category[] = categoriesFromDb.map((doc) => ({
       name: doc.name,
@@ -65,7 +65,7 @@ const getPlantData = async (): Promise<PlantData> => {
 
     return { plants, categories };
   } catch (error) {
-    console.error("Error fetching data from MongoDB:", error);
+    console.error('Error fetching data from MongoDB:', error);
     throw error;
   } finally {
     await client.close();
@@ -76,23 +76,21 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
   const plantData = await getPlantData();
   const { plants, categories } = plantData;
   const resolvedParams = await params;
-  const slug = resolvedParams.categorySlug.length > 0 ? resolvedParams.categorySlug[0] : undefined;
-  const selectedCategory: Category = slug
-    ? categories.find((cat) => cat.slug === slug) || categories.find((cat) => cat.slug === "all-plants")!
-    : categories.find((cat) => cat.slug === "all-plants")!;
+  const slug = resolvedParams.categorySlug?.[0] || 'all-plants';
+  const selectedCategory: Category =
+    categories.find((cat) => cat.slug === slug) || categories.find((cat) => cat.slug === 'all-plants')!;
 
   const displayedPlants: Plant[] =
-    selectedCategory.slug === "all-plants"
+    selectedCategory.slug === 'all-plants'
       ? plants
       : plants.filter((plant) => plant.category === selectedCategory.name);
 
   const plantCounts: { [key: string]: number } = {};
   categories.forEach((category) => {
-    if (category.slug === "all-plants") {
-      plantCounts[category.name] = plants.length;
-    } else {
-      plantCounts[category.name] = plants.filter((plant) => plant.category === category.name).length;
-    }
+    plantCounts[category.name] =
+      category.slug === 'all-plants'
+        ? plants.length
+        : plants.filter((plant) => plant.category === category.name).length;
   });
 
   return (
@@ -100,17 +98,15 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
       <header
         className="shadow relative flex p-5"
         style={{
-          background: "linear-gradient(to right, #DDF9D5, #BEFFE4)",
+          background: 'linear-gradient(to right, #DDF9D5, #BEFFE4)',
         }}
       >
         <div className="flex-grow flex items-start justify-start text-left">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="text-sm">
               <span className="text-gray-700">PlantIn</span>
-              <span className="mx-1 text-gray-700">  </span>
-              <span className="text-gray-600">
-                {selectedCategory.name} Identifier
-              </span>
+              <span className="mx-1 text-gray-700"> </span>
+              <span className="text-gray-600">{selectedCategory.name} Identifier</span>
             </div>
             <p className="mt-3 md:text-3xl text-2xl font-extrabold text-left w-full py-4">
               {selectedCategory.title}
@@ -138,13 +134,12 @@ const PlantIdentifier: NextPage<PlantIdentifierProps> = async ({ params }) => {
           </div>
         </div>
         <div className="w-[45%] h-full">
-  <img
-    src={selectedCategory.headerImage}
-    alt={`${selectedCategory.name} Illustration`}
-    className="w-full h-[70%] object-contain"
-  />
-</div>
-
+          <img
+            src={selectedCategory.headerImage}
+            alt={`${selectedCategory.name} Illustration`}
+            className="w-full h-[70%] object-contain"
+          />
+        </div>
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
