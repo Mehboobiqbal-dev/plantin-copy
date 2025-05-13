@@ -21,8 +21,10 @@ export default function SettingsPage() {
   const [newPassword, setNewPassword] = useState('');
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Default to true as fetchUserData will be called
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+
+  // debugger;
 
   async function fetchUserData(retryCount = 3, delay = 1000) {
     setIsLoading(true);
@@ -99,40 +101,26 @@ export default function SettingsPage() {
   }
 
   useEffect(() => {
-    console.log('SettingsPage - Session status:', status, 'Session data:', session);
+    console.log('Session status:', status, 'Session data:', session);
     if (status === 'authenticated') {
-      // Only set isLoading to true here if not already loading from initial state
-      // However, fetchUserData sets it internally, so initial true for isLoading state is fine.
       fetchUserData();
-    } else if (status === 'loading') {
-      // Handled by the main loading return
-    } else if (status === 'unauthenticated') {
-      // This case should be handled by onUnauthenticated if required:true is used,
-      // or needs explicit router.push if required:false or manual handling.
-      // router.push('/authmodel'); // This would be redundant if onUnauthenticated is active
     }
-  }, [status, session]); // Removed router from here as it's stable
+  }, [status, session]);
 
   useEffect(() => {
-    console.log('SettingsPage - State update:', { isLoading, user, error });
+    console.log('State update:', { isLoading, user, error });
   }, [isLoading, user, error]);
 
-  if (status === 'loading' || (status === 'authenticated' && isLoading)) {
-    return <div className="max-w-md mx-auto mt-8">Loading settings...</div>;
+  if (status === 'loading' || isLoading) {
+    return <div>Loading settings...</div>;
   }
-
-  // If required:true is used, this state should ideally not be reached often,
-  // as onUnauthenticated would redirect.
-  // if (status === 'unauthenticated') {
-  //   return <div className="max-w-md mx-auto mt-8">Redirecting to login...</div>;
-  // }
 
   if (error) {
     return (
       <div className="max-w-md mx-auto mt-8">
         <p className="text-red-500">Error: {error}</p>
         <button
-          onClick={() => fetchUserData()} // Consider if session is still valid before retrying
+          onClick={() => fetchUserData()}
           className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
         >
           Retry
@@ -141,28 +129,17 @@ export default function SettingsPage() {
     );
   }
 
-  if (!user && status === 'authenticated' && !isLoading) {
-    // This case means authenticated, not loading, no error, but no user data yet.
-    // Could be an issue with fetchUserData not setting user or an edge case.
-    return <div className="max-w-md mx-auto mt-8">No user data found, or still loading user details.</div>;
+  if (!user) {
+    return <div className="max-w-md mx-auto mt-8">No user data found</div>;
   }
-  
-  if (!user && status !== 'authenticated') {
-      // If not authenticated and not loading, and no user, it's likely an auth issue handled by redirect or login prompt
-      // This path might not be hit if redirects are effective
-      return <div className="max-w-md mx-auto mt-8">Please log in to view settings.</div>;
-  }
-
 
   return (
     <div className="max-w-md mx-auto mt-8">
       <h1 className="text-2xl font-bold mb-4">Settings</h1>
-      {user && (
-        <div className="mb-6">
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Name:</strong> {user.name || 'Not set'}</p>
-        </div>
-      )}
+      <div className="mb-6">
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>Name:</strong> {user.name || 'Not set'}</p>
+      </div>
       <h2 className="text-xl font-semibold mb-2">Change Password</h2>
       <form onSubmit={handlePasswordChange} className="space-y-4">
         <div>
@@ -190,4 +167,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-

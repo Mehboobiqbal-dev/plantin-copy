@@ -67,7 +67,10 @@ export function NavigationHeader() {
   // Redirect to main page after sign-in (if authenticated)
   React.useEffect(() => {
     if (status === "authenticated") {
-      router.push("/");
+      console.log('user is authenticated')
+      // router.push("/");
+    }else{
+      console.log('user is not authenticated')
     }
   }, [status, router]);
 
