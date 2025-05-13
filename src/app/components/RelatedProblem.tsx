@@ -23,9 +23,16 @@ const RelatedProblem: React.FC<RelatedProblemProps> = ({ count = 4 }) => {
     const fetchProblems = async () => {
       try {
         const response = await fetch('/api/problems');
-        if (!response.ok) throw new Error('Failed to fetch problems');
+        if (!response.ok) throw new Error(`Failed to fetch problems: ${response.status}`);
         const data = await response.json();
-        setItems(data.Data.slice(0, count));
+        console.log('Problems fetched:', data);
+
+        // Check if problems array exists
+        if (!data.problems || !Array.isArray(data.problems)) {
+          throw new Error('Invalid problems data structure');
+        }
+
+        setItems(data.problems.slice(0, count));
       } catch (error) {
         console.error('Error fetching problems:', error);
         setItems([]);

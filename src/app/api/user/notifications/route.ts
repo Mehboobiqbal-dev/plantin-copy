@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/app/lib/mongodb-client";
-import bcrypt from "bcryptjs";
 
 export async function PUT(req: NextRequest) {
   try {
@@ -8,20 +7,22 @@ export async function PUT(req: NextRequest) {
     const db = client.db();
     const users = db.collection("users");
 
-    const { email, newPassword } = await req.json();
-    if (!email || !newPassword || newPassword.length < 6) {
-      return NextResponse.json({ error: "Email and a password (min 6 chars) are required" }, { status: 400 });
+    const { email, plantCareReminders, newArticlesNotifications } = await req.json();
+    if (!email) {
+      return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    const result = await users.updateOne({ email }, { $set: { password: hashedPassword } });
+    const result = await users.updateOne(
+      { email },
+      { $set: { plantCareReminders, newArticlesNotifications } }
+    );
     if (result.matchedCount === 0) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
-    console.error("Error in PUT /api/user/password:", err);
+    console.error("Error in PUT /api/user/notifications:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

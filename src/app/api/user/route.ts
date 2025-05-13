@@ -1,63 +1,73 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/auth';
-import clientPromise from '@/app/lib/mongodb-client';
-import bcrypt from 'bcryptjs'; // Import bcryptjs
+import { NextRequest, NextResponse } from "next/server";
+import clientPromise from "@/app/lib/mongodb-client";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    console.log('Session data:', session);
-
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized: No session found' }, { status: 401 });
-    }
-
     const client = await clientPromise;
     const db = client.db();
-    const user = await db.collection('users').findOne({ email: session.user.email });
+    const users = db.collection("users");
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    const { searchParams } = new URL(req.url);
+    const email = searchParams.get("email");
+
+    if (!email) {
+      return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    return NextResponse.json({ email: user.email, name: user.name });
-  } catch (error) {
-    console.error('GET /api/user error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const user = await users.findOne({ email });
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ user }, { status: 200 });
+  } catch (err) {
+    console.error("Error in GET /api/user:", err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
 
-export async function POST(req: Request) {
+export async function PUT(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    console.log('Session data:', session);
-
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { newPassword } = await req.json();
-    if (!newPassword || newPassword.length < 6) {
-      return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10); // Use bcryptjs
     const client = await clientPromise;
     const db = client.db();
+    const users = db.collection("users");
 
-    const result = await db.collection('users').updateOne(
-      { email: session.user.email },
-      { $set: { password: hashedPassword } }
-    );
-
-    if (result.modifiedCount === 0) {
-      return NextResponse.json({ error: 'Failed to update password' }, { status: 400 });
+    const { email, fullName } = await req.json();
+    if (!email || !fullName) {
+      return NextResponse.json({ error: "Email and fullName are required" }, { status: 400 });
     }
 
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('POST /api/user error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const result = await users.updateOne({ email }, { $set: { fullName } });
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (err) {
+    console.error("Error in PUT /api/user:", err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+    const users = db.collection("users");
+
+    const { email } = await req.json();
+    if (!email) {
+      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    }
+
+    const result = await users.deleteOne({ email });
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (err) {
+    console.error("Error in DELETE /api/user:", err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
