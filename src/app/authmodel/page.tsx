@@ -8,15 +8,24 @@ import { useRouter } from 'next/navigation';
 
 const AuthModal = () => {
   const [activeTab, setActiveTab] = useState('signin');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
+  const [forgotEmail, setForgotEmail] = useState('');
   const [error, setError] = useState('');
+  const [forgotMessage, setForgotMessage] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [notificationsAccepted, setNotificationsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  // Validate email format
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   // Handle Sign-In
   const handleSignIn = async (e: React.FormEvent) => {
@@ -60,7 +69,6 @@ const AuthModal = () => {
     setError('');
     setIsLoading(true);
 
-    // Client-side validation
     if (password !== confirmPassword) {
       console.error('Client-side validation failed: Passwords do not match');
       setError('Passwords do not match.');
@@ -109,7 +117,6 @@ const AuthModal = () => {
         return;
       }
 
-      // After successful sign-up, attempt to sign in
       const signInResult = await signIn('credentials', {
         redirect: false,
         email,
@@ -134,6 +141,84 @@ const AuthModal = () => {
       } else {
         setError('An unexpected error occurred during sign-up. Please try again.');
       }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle Forgot Password
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setForgotMessage('');
+    setIsLoading(true);
+
+    if (!forgotEmail) {
+      setError('Please enter an email address.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!isValidEmail(forgotEmail)) {
+      setError('Please provide a valid email address.');
+      setIsLoading(false);
+      return;
+    }
+
+    const requestBody = { email: forgotEmail };
+    console.log('Sending forgot password request:', requestBody);
+
+    try {
+      const response = await fetch('/api/forgetpassword', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      });
+
+      console.log('Forgot password response:', {
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.ok,
+      });
+
+      // Get raw response text for debugging
+      const responseText = await response.text();
+      console.log('Forgot password raw response:', responseText);
+
+      // Try parsing as JSON
+      let data;
+      try {
+        data = JSON.parse(responseText);
+        console.log('Forgot password response data:', data);
+      } catch (jsonErr) {
+        console.error('Failed to parse response as JSON:', {
+          jsonError: jsonErr instanceof Error ? jsonErr.message : 'Unknown JSON error',
+          responseText,
+        });
+        setError('Server returned an invalid response. Please try again later.');
+        setIsLoading(false);
+        return;
+      }
+
+      if (!response.ok) {
+        console.error('Forgot password API error:', {
+          status: response.status,
+          error: data.error,
+          details: data,
+        });
+        setError(data.error || `Failed to send reset link (Status: ${response.status}).`);
+      } else {
+        setForgotMessage(data.message);
+        setForgotEmail('');
+      }
+    } catch (err: unknown) {
+      console.error('Forgot password fetch error:', {
+        rawError: err,
+        message: err instanceof Error ? err.message : 'Unknown error',
+        stack: err instanceof Error ? err.stack : undefined,
+        requestBody,
+      });
+      setError('Failed to connect to the server. Please check your network or try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -180,9 +265,12 @@ const AuthModal = () => {
       <div className="w-1/2 flex flex-col justify-center space-y-6 min-h-screen px-12">
         <div className="flex mb-8 border-b-2 border-gray-200">
           <button
-            onClick={() => setActiveTab('signin')}
+            onClick={() => {
+              setActiveTab('signin');
+              setShowForgotPassword(false);
+            }}
             className={`flex-1 text-center py-3 font-semibold transition-colors ${
-              activeTab === 'signin'
+              activeTab === 'signin' && !showForgotPassword
                 ? 'text-green-500 border-b-4 border-green-500'
                 : 'text-gray-500 border-b-4 border-transparent'
             }`}
@@ -190,9 +278,12 @@ const AuthModal = () => {
             Sign in
           </button>
           <button
-            onClick={() => setActiveTab('signup')}
+            onClick={() => {
+              setActiveTab('signup');
+              setShowForgotPassword(false);
+            }}
             className={`flex-1 text-center py-3 font-semibold transition-colors ${
-              activeTab === 'signup'
+              activeTab === 'signup' && !showForgotPassword
                 ? 'text-green-500 border-b-4 border-green-500'
                 : 'text-gray-500 border-b-4 border-transparent'
             }`}
@@ -203,6 +294,9 @@ const AuthModal = () => {
 
         {error && (
           <div className="text-red-500 text-center mb-4 font-medium">{error}</div>
+        )}
+        {forgotMessage && (
+          <div className="text-green-500 text-center mb-4 font-medium">{forgotMessage}</div>
         )}
 
         <div className="flex space-x-4 mb-8">
@@ -235,7 +329,65 @@ const AuthModal = () => {
           <hr className="flex-grow border-t border-gray-300" />
         </div>
 
-        {activeTab === 'signin' ? (
+        {showForgotPassword ? (
+          <form className="space-y-6" onSubmit={handleForgotPassword}>
+            <div>
+              <label className="block font-semibold mb-1 text-left">
+                Enter your email <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                placeholder="email@email.com"
+                className="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value.trim())}
+                required
+                disabled={isLoading}
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-green-400 text-white py-3 rounded-full font-semibold text-lg hover:bg-green-500 focus:outline-none disabled:opacity-50 flex items-center justify-center"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 mr-3 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Sending...
+                </>
+              ) : (
+                'Send Reset Link'
+              )}
+            </button>
+            <button
+              type="button"
+              className="text-sm text-gray-600 hover:underline w-full text-center"
+              onClick={() => setShowForgotPassword(false)}
+              disabled={isLoading}
+            >
+              Back to Sign In
+            </button>
+          </form>
+        ) : activeTab === 'signin' ? (
           <form className="space-y-6" onSubmit={handleSignIn}>
             <div>
               <label className="block font-semibold mb-1 text-left">
@@ -244,9 +396,9 @@ const AuthModal = () => {
               <input
                 type="email"
                 placeholder="email@email.com"
-                className="bg-white border-solid border border-secondary md:rounded-[20px] rounded-full box-border font-medium text-14 md:px-[13px] md:py-[13px] text-black w-full md:mt-3 mt-2 outline-none focus:outline-none hover:outline-none placeholder:text-[#A2B5D1B3] px-4 py-[10px]"
+                className="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value.trim())}
                 required
                 disabled={isLoading}
               />
@@ -256,9 +408,14 @@ const AuthModal = () => {
                 <label className="block font-semibold mb-1 text-left">
                   Enter password <span className="text-red-500">*</span>
                 </label>
-                <a href="#" className="text-sm text-gray-600 hover:underline">
+                <button
+                  type="button"
+                  className="text-sm text-gray-600 hover:underline"
+                  onClick={() => setShowForgotPassword(true)}
+                  disabled={isLoading}
+                >
                   Forgot password?
-                </a>
+                </button>
               </div>
               <input
                 type="password"
@@ -315,7 +472,7 @@ const AuthModal = () => {
                 placeholder="Your name"
                 className="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value.trim())}
                 required
                 disabled={isLoading}
               />
@@ -329,7 +486,7 @@ const AuthModal = () => {
                 placeholder="email@email.com"
                 className="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-400"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value.trim())}
                 required
                 disabled={isLoading}
               />

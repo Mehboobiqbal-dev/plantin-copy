@@ -26,6 +26,8 @@ interface ProblemData {
   selectedCategory: Category;
 }
 
+
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const categorySlug = searchParams.get("categorySlug") || "all-problem";

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/app/lib/mongodb-client";
 import bcrypt from "bcryptjs";
 
+
+
 export async function PUT(req: NextRequest) {
   try {
     const client = await clientPromise;

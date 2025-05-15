@@ -64,15 +64,15 @@ export function NavigationHeader() {
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Redirect to main page after sign-in (if authenticated)
-  React.useEffect(() => {
-    if (status === "authenticated") {
-      console.log('user is authenticated')
-      // router.push("/");
-    }else{
-      console.log('user is not authenticated')
-    }
-  }, [status, router]);
+  // // Redirect to main page after sign-in (if authenticated)
+  // React.useEffect(() => {
+  //   if (status === "authenticated") {
+  //     console.log('user is authenticated')
+  //     // router.push("/");
+  //   }else{
+  //     console.log('user is not authenticated')
+  //   }
+  // }, [status, router]);
 
   // Toggle dropdown visibility
   const toggleDropdown = () => {

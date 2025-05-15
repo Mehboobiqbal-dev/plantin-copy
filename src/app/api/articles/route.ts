@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server';
-import connectToDatabase from '@/app/lib/mongodb';
+import { connectToDatabase } from '@/app/lib/mongodb';
 import Article from '@/app/models/article';
-
+/**
+ * @swagger
+ * /api/articles:
+ *   get:
+ *     description: Returns the hello world
+ *     responses:
+ *       200:
+ *         description: Articles reloaded  successfully!
+ */
 export async function GET() {
   try {
     console.log('Handling GET /api/articles');
