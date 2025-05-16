@@ -4,7 +4,7 @@ import { connectToDatabase } from '@/app/lib/mongodb';
 import Article from '@/app/models/article';
 
 /**
- * @swagger
+ * @swagger 
  * /api/articles:
  *   get:
  *     summary: Retrieve all articles
