@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/lib/mongodb';
-import crypto from 'crypto';
+import { randomBytes, createHash } from 'crypto';
 import nodemailer from 'nodemailer';
 import { z } from 'zod';
 
@@ -15,7 +15,6 @@ const GMAIL_USER = process.env.GMAIL_USER;
 const GMAIL_PASS = process.env.GMAIL_PASS;
 const MONGODB_URI = process.env.MONGODB_URI;
 const APP_URL = process.env.APP_URL || 'http://localhost:3000';
-
 
 export async function POST(req: Request) {
   try {
@@ -56,7 +55,16 @@ export async function POST(req: Request) {
       );
     }
 
+    // Ensure db is defined
     const db = mongoose.connection.db;
+    if (!db) {
+      console.error('Database connection object is undefined');
+      return NextResponse.json(
+        { error: 'Database connection failed.' },
+        { status: 500 }
+      );
+    }
+
     const users = db.collection('users');
 
     // Find user document
@@ -88,8 +96,8 @@ export async function POST(req: Request) {
     // Generate token and expiration
     let rawToken, tokenHash, expires;
     try {
-      rawToken = crypto.randomBytes(32).toString('hex');
-      tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
+      rawToken = randomBytes(32).toString('hex');
+      tokenHash = createHash('sha256').update(rawToken).digest('hex');
       expires = new Date(Date.now() + 3600_000); // 1 hour
       console.log(`Generated token for ${email}`);
     } catch (tokenError) {

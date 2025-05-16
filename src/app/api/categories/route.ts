@@ -25,6 +25,145 @@ interface PlantData {
   plantCounts: { [key: string]: number };
   selectedCategory: Category;
 }
+/**
+ * @swagger
+ * /api/categories:
+ *   get:
+ *     summary: Retrieve plant data by category
+ *     description: Fetches a list of plants, categories, plant counts per category, and the selected category from the database. Plants are filtered by the provided categorySlug, defaulting to 'all-plants' if not specified.
+ *     tags:
+ *       - Plants
+ *     parameters:
+ *       - in: query
+ *         name: categorySlug
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: The slug of the category to filter plants by (defaults to 'all-plants')
+ *         example: indoor-plants
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved plant data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 plants:
+ *                   type: array
+ *                   description: List of plants filtered by the selected category
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         description: Unique identifier of the plant
+ *                         example: 507f1f77bcf86cd799439011
+ *                       name:
+ *                         type: string
+ *                         description: Name of the plant
+ *                         example: Monstera Deliciosa
+ *                       category:
+ *                         type: string
+ *                         description: Category the plant belongs to
+ *                         example: Indoor Plants
+ *                       image:
+ *                         type: string
+ *                         description: URL or path to the plant image
+ *                         example: https://example.com/images/monstera.jpg
+ *                       description:
+ *                         type: string
+ *                         description: Brief description of the plant
+ *                         example: A tropical plant with large, split leaves.
+ *                 categories:
+ *                   type: array
+ *                   description: List of all available categories
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       name:
+ *                         type: string
+ *                         description: Name of the category
+ *                         example: Indoor Plants
+ *                       slug:
+ *                         type: string
+ *                         description: URL-friendly identifier for the category
+ *                         example: indoor-plants
+ *                       headerImage:
+ *                         type: string
+ *                         description: URL or path to the category header image
+ *                         example: https://example.com/images/indoor-plants-header.jpg
+ *                       title:
+ *                         type: string
+ *                         description: Display title of the category
+ *                         example: Indoor Plants Identifier
+ *                       description:
+ *                         type: string
+ *                         description: Brief description of the category
+ *                         example: Explore a variety of indoor plants.
+ *                       mainDescription:
+ *                         type: string
+ *                         description: Main description of the category
+ *                         example: Indoor plants thrive in controlled environments.
+ *                       expandedDescription:
+ *                         type: string
+ *                         description: Detailed description of the category
+ *                         example: Learn about the care and benefits of indoor plants.
+ *                 plantCounts:
+ *                   type: object
+ *                   description: Number of plants per category
+ *                   additionalProperties:
+ *                     type: number
+ *                   example:
+ *                     Indoor Plants: 10
+ *                     Outdoor Plants: 5
+ *                     All Plants: 15
+ *                 selectedCategory:
+ *                   type: object
+ *                   description: The selected category based on categorySlug
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                       example: Indoor Plants
+ *                     slug:
+ *                       type: string
+ *                       example: indoor-plants
+ *                     headerImage:
+ *                       type: string
+ *                       example: https://example.com/images/indoor-plants-header.jpg
+ *                     title:
+ *                       type: string
+ *                       example: Indoor Plants Identifier
+ *                     description:
+ *                       type: string
+ *                       example: Explore a variety of indoor plants.
+ *                     mainDescription:
+ *                       type: string
+ *                       example: Indoor plants thrive in controlled environments.
+ *                     expandedDescription:
+ *                       type: string
+ *                       example: Learn about the care and benefits of indoor plants.
+ *       404:
+ *         description: Category not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Category not found
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

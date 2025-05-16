@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/lib/mongodb';
-import crypto from 'crypto';
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
+import { createHash } from 'crypto';
 import { z } from 'zod';
 
 // Validation schema for request body
@@ -13,71 +13,6 @@ const ResetPasswordSchema = z.object({
 });
 
 const MONGODB_URI = process.env.MONGODB_URI;
-/**
- * @swagger
- * /api/reset-password:
- *   post:
- *     summary: Reset user password
- *     description: Resets a user's password using a valid reset token, email, and new password.
- *     tags:
- *       - Authentication
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - token
- *               - newPassword
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 description: User's email address
- *                 example: user@example.com
- *               token:
- *                 type: string
- *                 description: Password reset token sent to the user
- *                 example: a1b2c3d4e5f6g7h8i9j0
- *               newPassword:
- *                 type: string
- *                 format: password
- *                 description: New password for the user (minimum 8 characters)
- *                 example: NewPassword123
- *     responses:
- *       200:
- *         description: Password reset successful
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Password reset successfully.
- *       400:
- *         description: Invalid input or expired reset link
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Invalid or expired reset link.
- *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Internal server error.
- */
 
 export async function POST(req: Request) {
   try {
@@ -114,13 +49,22 @@ export async function POST(req: Request) {
       );
     }
 
+    // Ensure the database connection is ready
+    if (!mongoose.connection.db) {
+      console.error('Database connection not established');
+      return NextResponse.json(
+        { error: 'Database connection not established.' },
+        { status: 500 }
+      );
+    }
+
     const db = mongoose.connection.db;
     const users = db.collection('users');
 
     // Hash the provided token
     let tokenHash;
     try {
-      tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+      tokenHash = createHash('sha256').update(token).digest('hex');
     } catch (tokenError) {
       console.error('Token hashing error:', tokenError);
       return NextResponse.json(
@@ -157,7 +101,7 @@ export async function POST(req: Request) {
     // Hash the new password
     let hashedPassword;
     try {
-      hashedPassword = await bcrypt.hash(newPassword, 10);
+      hashedPassword = await bcryptjs.hash(newPassword, 10);
     } catch (hashError) {
       console.error('Password hashing error:', hashError);
       return NextResponse.json(
