@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+.next/cache/webpack                 390.96 MB
+node_modules/next/dist                4.44 MB
+.next/server/app                      3.56 MB
+.next/static/chunks                   2.21 MB
