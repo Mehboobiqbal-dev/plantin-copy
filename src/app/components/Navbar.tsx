@@ -22,9 +22,9 @@ export default function Navbar() {
             />
           </div>
           <div className="flex space-x-4">
-            <a href="#services" className="hover:text-blue-400">Services</a>
-            <a href="#features" className="hover:text-blue-400">Avantages</a>
-            <a href="#contact" className="hover:text-blue-400">Contact</a>
+            <a href="/services" className="hover:text-blue-400">Services</a>
+            <a href="/avantages" className="hover:text-blue-400">Avantages</a>
+            <a href="/contact" className="hover:text-blue-400">Contact</a>
           </div>
         </div>
       </div>
