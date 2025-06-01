@@ -1,103 +1,69 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 export default function ThreeScene() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
     // Scene Setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x111827); // Match bg-gray-900
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Load EXR Panorama
-    const exrLoader = new EXRLoader();
-    exrLoader.load(
-      '/textures/panorama.exr', // Your EXR file
-      (texture) => {
-        texture.mapping = THREE.EquirectangularReflectionMapping;
-        const geometry = new THREE.SphereGeometry(500, 60, 40);
-        geometry.scale(-1, 1, 1); // Invert for inside view
-        const material = new THREE.MeshBasicMaterial({ map: texture });
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
+    // Simple 3D House Model
+    const houseGroup = new THREE.Group();
+    
+    // Base (Foundation)
+    const baseGeometry = new THREE.BoxGeometry(10, 0.5, 8);
+    const baseMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+    const base = new THREE.Mesh(baseGeometry, baseMaterial);
+    houseGroup.add(base);
 
-        // Hotspots (adjust positions based on panorama)
-        const hotspots = [
-          { position: new THREE.Vector3(100, 0, 0), label: 'Salon' },
-          { position: new THREE.Vector3(-100, 0, 0), label: 'Cuisine' },
-          { position: new THREE.Vector3(0, 0, 100), label: 'Chambre' },
-        ];
-        hotspots.forEach((hotspot) => {
-          const geometry = new THREE.SphereGeometry(10, 32, 32);
-          const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-          const sphere = new THREE.Mesh(geometry, material);
-          sphere.position.copy(hotspot.position);
-          sphere.userData = { label: hotspot.label };
-          scene.add(sphere);
-        });
+    // Walls
+    const wallGeometry = new THREE.BoxGeometry(10, 4, 8);
+    const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xf5f5f5 });
+    const walls = new THREE.Mesh(wallGeometry, wallMaterial);
+    walls.position.y = 2.25;
+    houseGroup.add(walls);
 
-        // Click Handler for Hotspots
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-        const onClick = (event: MouseEvent) => {
-          mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-          mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-          raycaster.setFromCamera(mouse, camera);
-          const intersects = raycaster.intersectObjects(scene.children, true);
-          if (intersects.length > 0) {
-            const obj = intersects[0].object;
-            if (obj.userData.label) {
-              alert(`Visiter: ${obj.userData.label}`);
-            }
-          }
-        };
-        window.addEventListener('click', onClick);
+    // Roof
+    const roofGeometry = new THREE.ConeGeometry(7.5, 3, 4);
+    const roofMaterial = new THREE.MeshStandardMaterial({ color: 0x800000 });
+    const roof = new THREE.Mesh(roofGeometry, roofMaterial);
+    roof.position.y = 5;
+    roof.rotation.y = Math.PI / 4;
+    houseGroup.add(roof);
 
-        setIsLoading(false);
+    scene.add(houseGroup);
 
-        // Animation Loop
-        const animate = () => {
-          requestAnimationFrame(animate);
-          controls.update();
-          renderer.render(scene, camera);
-        };
-        animate();
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(10, 10, 10);
+    scene.add(directionalLight);
 
-        // Cleanup
-        return () => {
-          window.removeEventListener('click', onClick);
-        };
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
-      },
-      (error) => {
-        console.error('Error loading EXR panorama:', error);
-        setIsLoading(false);
-      }
-    );
+    // Camera Position
+    camera.position.z = 15;
 
-    // Camera Position (inside panorama sphere)
-    camera.position.set(0, 0, 0.1);
-
-    // Orbit Controls (panning only)
+    // Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.enableZoom = false; // No zoom for panorama
-    controls.minDistance = 0;
-    controls.maxDistance = 0;
+
+    // Animation Loop
+    const animate = () => {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    };
+    animate();
 
     // Handle Resize
     const handleResize = () => {
@@ -114,13 +80,5 @@ export default function ThreeScene() {
     };
   }, []);
 
-  return (
-    <div ref={mountRef} className="absolute inset-0 z-0">
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600"></div>
-        </div>
-      )}
-    </div>
-  );
+  return <div ref={mountRef} className="absolute inset-0 z-0" />;
 }
